@@ -3,12 +3,11 @@
 # train: newscommentary + europarl
 # valid: newsdiscussdev2015
 # test: newstest2014/newsdiscusstest2015/MTNT-test-fr-en
-RAW_DATA_DIR=../../data
-DATA_DIR=./data
-VOCAB_DIR=../fr-en
-TOOL_DIR=../../tools
+source path.config
+
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
+mkdir result
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -56,5 +55,47 @@ else
 fi
 
 # building vocabulary
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+# mkdir ${DATA_DIR}/onmt-vocab
+# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+# python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+#                                  -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+#                                  -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+#                                  -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+#                                  -src_vocab ${DATA_DIR}/train.vocab.fr \
+#                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
+#                                  -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
+#                                  -src_seq_length 70 \
+#                                  -tgt_seq_length 70 \
+#                                  -seed 1234
+
+# training
+python ${ONMT_DIR}/train.py -word_vec_size 512 \
+                            -encoder_type brnn \
+                            -decoder_type rnn \
+                            -rnn_size 1024 \
+                            -layers 2 \
+                            -bridge \
+                            -global_attention mlp \
+                            -data ${DATA_DIR}/onmt-vocab/${NAME} \
+                            -save_model models/${NAME} \
+                            -save_checkpoint_steps 5000 \
+                            -batch_size 4000 \
+                            -batch_type tokens \
+                            -valid_steps 5000 \
+                            -train_steps 150000 \
+                            -early_stopping 5 \
+                            -keep_checkpoint 10 \
+                            -optim adam \
+                            -dropout 0.3 \
+                            -label_smoothing 0.1 \
+                            -learning_rate 0.001 \
+                            -decay_steps 10000 \
+                            -start_decay_steps 30000 \
+                            -report_every 500 \
+                            -log_file train_log.log \
+                            -tensorboard \
+                            -tensorboard_log_dir models \
+                            -seed 1234 \
+                            -world_size 1 \
+                            -gpu_ranks 0
