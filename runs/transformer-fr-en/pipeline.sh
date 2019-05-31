@@ -98,8 +98,8 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -learning_rate 2.0 \
                             -max_grad_norm 0.0 \
                             -param_init 0.0 \
-                            -param_init_glorot 'true' \
-                            -position_encoding 'true' \
+                            -param_init_glorot True \
+                            -position_encoding True \
                             -report_every 500 \
                             -log_file train_log.log \
                             -tensorboard \
