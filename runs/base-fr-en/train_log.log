@@ -1,0 +1,384 @@
+[2019-05-31 02:01:41,874 INFO]  * src vocab size = 16412
+[2019-05-31 02:01:41,874 INFO]  * tgt vocab size = 16500
+[2019-05-31 02:01:41,874 INFO] Building model...
+[2019-05-31 02:01:44,880 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-05-31 02:01:44,881 INFO] encoder: 21004288
+[2019-05-31 02:01:44,881 INFO] decoder: 48448628
+[2019-05-31 02:01:44,881 INFO] * number of parameters: 69452916
+[2019-05-31 02:01:45,008 INFO] Starting training on GPU: [0]
+[2019-05-31 02:01:45,008 INFO] Start training loop and validate every 5000 steps...
+[2019-05-31 02:01:56,412 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 02:04:57,774 INFO] Step 500/150000; acc:  24.42; ppl: 94.18; xent: 4.55; lr: 0.00100; 9501/8780 tok/s;    193 sec
+[2019-05-31 02:07:58,051 INFO] Step 1000/150000; acc:  43.19; ppl: 23.03; xent: 3.14; lr: 0.00100; 10150/9387 tok/s;    373 sec
+[2019-05-31 02:10:53,829 INFO] Step 1500/150000; acc:  50.78; ppl: 13.16; xent: 2.58; lr: 0.00100; 10289/9578 tok/s;    549 sec
+[2019-05-31 02:13:50,990 INFO] Step 2000/150000; acc:  53.86; ppl: 10.51; xent: 2.35; lr: 0.00100; 10229/9351 tok/s;    726 sec
+[2019-05-31 02:16:51,015 INFO] Step 2500/150000; acc:  55.93; ppl:  9.06; xent: 2.20; lr: 0.00100; 10164/9357 tok/s;    906 sec
+[2019-05-31 02:19:51,796 INFO] Step 3000/150000; acc:  57.21; ppl:  8.25; xent: 2.11; lr: 0.00100; 10088/9222 tok/s;   1087 sec
+[2019-05-31 02:22:48,535 INFO] Step 3500/150000; acc:  58.69; ppl:  7.48; xent: 2.01; lr: 0.00100; 10333/9522 tok/s;   1264 sec
+[2019-05-31 02:25:47,567 INFO] Step 4000/150000; acc:  59.58; ppl:  7.01; xent: 1.95; lr: 0.00100; 10218/9474 tok/s;   1443 sec
+[2019-05-31 02:28:47,353 INFO] Step 4500/150000; acc:  59.87; ppl:  6.83; xent: 1.92; lr: 0.00100; 10150/9318 tok/s;   1622 sec
+[2019-05-31 02:31:47,811 INFO] Step 5000/150000; acc:  60.44; ppl:  6.57; xent: 1.88; lr: 0.00100; 10127/9270 tok/s;   1803 sec
+[2019-05-31 02:31:47,819 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 02:31:56,789 INFO] Validation perplexity: 21.6491
+[2019-05-31 02:31:56,790 INFO] Validation accuracy: 48.8291
+[2019-05-31 02:31:56,790 INFO] Model is improving ppl: inf --> 21.6491.
+[2019-05-31 02:31:56,790 INFO] Model is improving acc: -inf --> 48.8291.
+[2019-05-31 02:31:56,790 INFO] Saving checkpoint models/fr-en_step_5000.pt
+[2019-05-31 02:34:56,303 INFO] Step 5500/150000; acc:  61.10; ppl:  6.29; xent: 1.84; lr: 0.00100; 9641/8893 tok/s;   1991 sec
+[2019-05-31 02:37:53,877 INFO] Step 6000/150000; acc:  61.58; ppl:  6.10; xent: 1.81; lr: 0.00100; 10241/9458 tok/s;   2169 sec
+[2019-05-31 02:40:49,564 INFO] Step 6500/150000; acc:  62.16; ppl:  5.89; xent: 1.77; lr: 0.00100; 10373/9571 tok/s;   2345 sec
+[2019-05-31 02:43:47,967 INFO] Step 7000/150000; acc:  62.64; ppl:  5.70; xent: 1.74; lr: 0.00100; 10260/9496 tok/s;   2523 sec
+[2019-05-31 02:46:45,857 INFO] Step 7500/150000; acc:  62.46; ppl:  5.75; xent: 1.75; lr: 0.00100; 10243/9372 tok/s;   2701 sec
+[2019-05-31 02:49:14,417 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 02:50:06,063 INFO] Step 8000/150000; acc:  63.13; ppl:  5.52; xent: 1.71; lr: 0.00100; 8707/8061 tok/s;   2901 sec
+[2019-05-31 02:53:06,166 INFO] Step 8500/150000; acc:  63.05; ppl:  5.52; xent: 1.71; lr: 0.00100; 10121/9404 tok/s;   3081 sec
+[2019-05-31 02:56:05,445 INFO] Step 9000/150000; acc:  63.47; ppl:  5.39; xent: 1.68; lr: 0.00100; 10164/9399 tok/s;   3260 sec
+[2019-05-31 02:59:01,752 INFO] Step 9500/150000; acc:  63.76; ppl:  5.28; xent: 1.66; lr: 0.00100; 10275/9519 tok/s;   3437 sec
+[2019-05-31 03:02:00,152 INFO] Step 10000/150000; acc:  64.09; ppl:  5.20; xent: 1.65; lr: 0.00100; 10240/9310 tok/s;   3615 sec
+[2019-05-31 03:02:00,160 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 03:02:14,088 INFO] Validation perplexity: 16.008
+[2019-05-31 03:02:14,089 INFO] Validation accuracy: 52.534
+[2019-05-31 03:02:14,089 INFO] Model is improving ppl: 21.6491 --> 16.008.
+[2019-05-31 03:02:14,089 INFO] Model is improving acc: 48.8291 --> 52.534.
+[2019-05-31 03:02:14,089 INFO] Saving checkpoint models/fr-en_step_10000.pt
+[2019-05-31 03:05:15,842 INFO] Step 10500/150000; acc:  63.93; ppl:  5.21; xent: 1.65; lr: 0.00100; 9305/8532 tok/s;   3811 sec
+[2019-05-31 03:08:17,059 INFO] Step 11000/150000; acc:  64.29; ppl:  5.11; xent: 1.63; lr: 0.00100; 10069/9251 tok/s;   3992 sec
+[2019-05-31 03:11:14,198 INFO] Step 11500/150000; acc:  64.46; ppl:  5.04; xent: 1.62; lr: 0.00100; 10355/9528 tok/s;   4169 sec
+[2019-05-31 03:14:17,901 INFO] Step 12000/150000; acc:  64.61; ppl:  5.00; xent: 1.61; lr: 0.00100; 9931/9206 tok/s;   4353 sec
+[2019-05-31 03:17:15,942 INFO] Step 12500/150000; acc:  64.63; ppl:  5.00; xent: 1.61; lr: 0.00100; 10246/9361 tok/s;   4531 sec
+[2019-05-31 03:20:15,407 INFO] Step 13000/150000; acc:  65.01; ppl:  4.89; xent: 1.59; lr: 0.00100; 10177/9274 tok/s;   4710 sec
+[2019-05-31 03:23:13,117 INFO] Step 13500/150000; acc:  64.99; ppl:  4.87; xent: 1.58; lr: 0.00100; 10220/9479 tok/s;   4888 sec
+[2019-05-31 03:26:15,045 INFO] Step 14000/150000; acc:  65.25; ppl:  4.81; xent: 1.57; lr: 0.00100; 10051/9249 tok/s;   5070 sec
+[2019-05-31 03:29:15,747 INFO] Step 14500/150000; acc:  65.49; ppl:  4.75; xent: 1.56; lr: 0.00100; 10039/9275 tok/s;   5251 sec
+[2019-05-31 03:32:11,840 INFO] Step 15000/150000; acc:  65.50; ppl:  4.71; xent: 1.55; lr: 0.00100; 10402/9662 tok/s;   5427 sec
+[2019-05-31 03:32:11,848 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 03:32:26,375 INFO] Validation perplexity: 13.6984
+[2019-05-31 03:32:26,375 INFO] Validation accuracy: 54.5062
+[2019-05-31 03:32:26,375 INFO] Model is improving ppl: 16.008 --> 13.6984.
+[2019-05-31 03:32:26,375 INFO] Model is improving acc: 52.534 --> 54.5062.
+[2019-05-31 03:32:26,376 INFO] Saving checkpoint models/fr-en_step_15000.pt
+[2019-05-31 03:35:28,759 INFO] Step 15500/150000; acc:  65.35; ppl:  4.76; xent: 1.56; lr: 0.00100; 9107/8367 tok/s;   5624 sec
+[2019-05-31 03:36:59,889 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.2.pt, number of examples: 197758
+[2019-05-31 03:38:35,427 INFO] Step 16000/150000; acc:  65.46; ppl:  4.72; xent: 1.55; lr: 0.00100; 9317/8657 tok/s;   5810 sec
+[2019-05-31 03:41:37,819 INFO] Step 16500/150000; acc:  65.78; ppl:  4.65; xent: 1.54; lr: 0.00100; 9954/9157 tok/s;   5993 sec
+[2019-05-31 03:44:34,008 INFO] Step 17000/150000; acc:  66.00; ppl:  4.58; xent: 1.52; lr: 0.00100; 10169/9321 tok/s;   6169 sec
+[2019-05-31 03:47:03,665 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 03:47:47,045 INFO] Step 17500/150000; acc:  66.10; ppl:  4.55; xent: 1.52; lr: 0.00100; 9383/8685 tok/s;   6362 sec
+[2019-05-31 03:50:45,386 INFO] Step 18000/150000; acc:  65.89; ppl:  4.59; xent: 1.52; lr: 0.00100; 10301/9466 tok/s;   6540 sec
+[2019-05-31 03:53:45,264 INFO] Step 18500/150000; acc:  66.09; ppl:  4.54; xent: 1.51; lr: 0.00100; 10098/9373 tok/s;   6720 sec
+[2019-05-31 03:56:39,198 INFO] Step 19000/150000; acc:  66.31; ppl:  4.48; xent: 1.50; lr: 0.00100; 10392/9597 tok/s;   6894 sec
+[2019-05-31 03:59:38,725 INFO] Step 19500/150000; acc:  66.24; ppl:  4.50; xent: 1.50; lr: 0.00100; 10111/9327 tok/s;   7074 sec
+[2019-05-31 04:02:38,918 INFO] Step 20000/150000; acc:  66.53; ppl:  4.41; xent: 1.48; lr: 0.00100; 10221/9383 tok/s;   7254 sec
+[2019-05-31 04:02:38,926 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 04:02:52,354 INFO] Validation perplexity: 12.0155
+[2019-05-31 04:02:52,355 INFO] Validation accuracy: 55.9787
+[2019-05-31 04:02:52,355 INFO] Model is improving ppl: 13.6984 --> 12.0155.
+[2019-05-31 04:02:52,355 INFO] Model is improving acc: 54.5062 --> 55.9787.
+[2019-05-31 04:02:52,355 INFO] Saving checkpoint models/fr-en_step_20000.pt
+[2019-05-31 04:05:52,500 INFO] Step 20500/150000; acc:  66.41; ppl:  4.44; xent: 1.49; lr: 0.00100; 9398/8622 tok/s;   7447 sec
+[2019-05-31 04:08:48,354 INFO] Step 21000/150000; acc:  66.61; ppl:  4.39; xent: 1.48; lr: 0.00100; 10361/9531 tok/s;   7623 sec
+[2019-05-31 04:11:48,941 INFO] Step 21500/150000; acc:  66.83; ppl:  4.34; xent: 1.47; lr: 0.00100; 10130/9378 tok/s;   7804 sec
+[2019-05-31 04:14:48,740 INFO] Step 22000/150000; acc:  66.48; ppl:  4.41; xent: 1.48; lr: 0.00100; 10169/9344 tok/s;   7984 sec
+[2019-05-31 04:17:48,123 INFO] Step 22500/150000; acc:  66.73; ppl:  4.35; xent: 1.47; lr: 0.00100; 10169/9287 tok/s;   8163 sec
+[2019-05-31 04:20:46,943 INFO] Step 23000/150000; acc:  66.86; ppl:  4.31; xent: 1.46; lr: 0.00100; 10158/9453 tok/s;   8342 sec
+[2019-05-31 04:23:42,723 INFO] Step 23500/150000; acc:  67.16; ppl:  4.25; xent: 1.45; lr: 0.00100; 10343/9514 tok/s;   8518 sec
+[2019-05-31 04:26:38,763 INFO] Step 24000/150000; acc:  67.06; ppl:  4.26; xent: 1.45; lr: 0.00100; 10384/9551 tok/s;   8694 sec
+[2019-05-31 04:29:37,853 INFO] Step 24500/150000; acc:  67.07; ppl:  4.26; xent: 1.45; lr: 0.00100; 10195/9397 tok/s;   8873 sec
+[2019-05-31 04:32:37,975 INFO] Step 25000/150000; acc:  67.30; ppl:  4.21; xent: 1.44; lr: 0.00100; 9991/9193 tok/s;   9053 sec
+[2019-05-31 04:32:37,985 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 04:32:52,367 INFO] Validation perplexity: 11.7001
+[2019-05-31 04:32:52,367 INFO] Validation accuracy: 56.3808
+[2019-05-31 04:32:52,368 INFO] Model is improving ppl: 12.0155 --> 11.7001.
+[2019-05-31 04:32:52,368 INFO] Model is improving acc: 55.9787 --> 56.3808.
+[2019-05-31 04:32:52,368 INFO] Saving checkpoint models/fr-en_step_25000.pt
+[2019-05-31 04:34:38,423 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 04:36:11,303 INFO] Step 25500/150000; acc:  66.89; ppl:  4.30; xent: 1.46; lr: 0.00100; 8241/7650 tok/s;   9266 sec
+[2019-05-31 04:39:10,275 INFO] Step 26000/150000; acc:  67.23; ppl:  4.22; xent: 1.44; lr: 0.00100; 10221/9416 tok/s;   9445 sec
+[2019-05-31 04:42:09,205 INFO] Step 26500/150000; acc:  67.42; ppl:  4.18; xent: 1.43; lr: 0.00100; 10213/9504 tok/s;   9624 sec
+[2019-05-31 04:45:02,899 INFO] Step 27000/150000; acc:  67.55; ppl:  4.15; xent: 1.42; lr: 0.00100; 10434/9596 tok/s;   9798 sec
+[2019-05-31 04:48:00,739 INFO] Step 27500/150000; acc:  67.36; ppl:  4.18; xent: 1.43; lr: 0.00100; 10218/9344 tok/s;   9976 sec
+[2019-05-31 04:51:00,046 INFO] Step 28000/150000; acc:  67.29; ppl:  4.20; xent: 1.43; lr: 0.00100; 10195/9304 tok/s;  10155 sec
+[2019-05-31 04:53:58,255 INFO] Step 28500/150000; acc:  67.60; ppl:  4.13; xent: 1.42; lr: 0.00100; 10238/9431 tok/s;  10333 sec
+[2019-05-31 04:56:57,290 INFO] Step 29000/150000; acc:  67.55; ppl:  4.13; xent: 1.42; lr: 0.00100; 10257/9449 tok/s;  10512 sec
+[2019-05-31 04:59:58,532 INFO] Step 29500/150000; acc:  67.52; ppl:  4.15; xent: 1.42; lr: 0.00100; 10025/9297 tok/s;  10694 sec
+[2019-05-31 05:02:57,430 INFO] Step 30000/150000; acc:  67.66; ppl:  4.11; xent: 1.41; lr: 0.00050; 10255/9336 tok/s;  10872 sec
+[2019-05-31 05:02:57,438 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 05:03:10,900 INFO] Validation perplexity: 11.1101
+[2019-05-31 05:03:10,901 INFO] Validation accuracy: 56.9072
+[2019-05-31 05:03:10,901 INFO] Model is improving ppl: 11.7001 --> 11.1101.
+[2019-05-31 05:03:10,901 INFO] Model is improving acc: 56.3808 --> 56.9072.
+[2019-05-31 05:03:10,901 INFO] Saving checkpoint models/fr-en_step_30000.pt
+[2019-05-31 05:06:10,304 INFO] Step 30500/150000; acc:  68.25; ppl:  3.97; xent: 1.38; lr: 0.00050; 9455/8632 tok/s;  11065 sec
+[2019-05-31 05:09:08,167 INFO] Step 31000/150000; acc:  68.30; ppl:  3.95; xent: 1.37; lr: 0.00050; 10212/9474 tok/s;  11243 sec
+[2019-05-31 05:12:04,919 INFO] Step 31500/150000; acc:  68.68; ppl:  3.88; xent: 1.36; lr: 0.00050; 10287/9521 tok/s;  11420 sec
+[2019-05-31 05:15:02,376 INFO] Step 32000/150000; acc:  68.61; ppl:  3.89; xent: 1.36; lr: 0.00050; 10263/9486 tok/s;  11597 sec
+[2019-05-31 05:17:59,252 INFO] Step 32500/150000; acc:  68.81; ppl:  3.83; xent: 1.34; lr: 0.00050; 10341/9566 tok/s;  11774 sec
+[2019-05-31 05:21:02,718 INFO] Step 33000/150000; acc:  68.67; ppl:  3.86; xent: 1.35; lr: 0.00050; 9637/8847 tok/s;  11958 sec
+[2019-05-31 05:21:51,526 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.2.pt, number of examples: 197758
+[2019-05-31 05:24:09,443 INFO] Step 33500/150000; acc:  68.52; ppl:  3.88; xent: 1.36; lr: 0.00050; 9440/8788 tok/s;  12144 sec
+[2019-05-31 05:27:08,951 INFO] Step 34000/150000; acc:  69.07; ppl:  3.78; xent: 1.33; lr: 0.00050; 10083/9242 tok/s;  12324 sec
+[2019-05-31 05:30:06,599 INFO] Step 34500/150000; acc:  69.09; ppl:  3.76; xent: 1.33; lr: 0.00050; 10156/9270 tok/s;  12502 sec
+[2019-05-31 05:31:55,129 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 05:33:19,654 INFO] Step 35000/150000; acc:  68.95; ppl:  3.80; xent: 1.33; lr: 0.00050; 9362/8719 tok/s;  12695 sec
+[2019-05-31 05:33:19,662 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 05:33:33,230 INFO] Validation perplexity: 9.88615
+[2019-05-31 05:33:33,230 INFO] Validation accuracy: 58.6073
+[2019-05-31 05:33:33,231 INFO] Model is improving ppl: 11.1101 --> 9.88615.
+[2019-05-31 05:33:33,231 INFO] Model is improving acc: 56.9072 --> 58.6073.
+[2019-05-31 05:33:33,231 INFO] Saving checkpoint models/fr-en_step_35000.pt
+[2019-05-31 05:36:32,275 INFO] Step 35500/150000; acc:  69.05; ppl:  3.77; xent: 1.33; lr: 0.00050; 9561/8763 tok/s;  12887 sec
+[2019-05-31 05:39:31,233 INFO] Step 36000/150000; acc:  69.17; ppl:  3.75; xent: 1.32; lr: 0.00050; 10148/9441 tok/s;  13066 sec
+[2019-05-31 05:42:24,904 INFO] Step 36500/150000; acc:  69.18; ppl:  3.75; xent: 1.32; lr: 0.00050; 10407/9527 tok/s;  13240 sec
+[2019-05-31 05:45:25,328 INFO] Step 37000/150000; acc:  69.12; ppl:  3.75; xent: 1.32; lr: 0.00050; 10081/9342 tok/s;  13420 sec
+[2019-05-31 05:48:24,918 INFO] Step 37500/150000; acc:  69.27; ppl:  3.71; xent: 1.31; lr: 0.00050; 10194/9377 tok/s;  13600 sec
+[2019-05-31 05:51:27,913 INFO] Step 38000/150000; acc:  69.31; ppl:  3.71; xent: 1.31; lr: 0.00050; 9960/9130 tok/s;  13783 sec
+[2019-05-31 05:54:25,904 INFO] Step 38500/150000; acc:  69.41; ppl:  3.69; xent: 1.31; lr: 0.00050; 10253/9459 tok/s;  13961 sec
+[2019-05-31 05:57:32,184 INFO] Step 39000/150000; acc:  69.34; ppl:  3.70; xent: 1.31; lr: 0.00050; 9801/9091 tok/s;  14147 sec
+[2019-05-31 06:00:36,090 INFO] Step 39500/150000; acc:  69.39; ppl:  3.69; xent: 1.31; lr: 0.00050; 9997/9102 tok/s;  14331 sec
+[2019-05-31 06:03:42,071 INFO] Step 40000/150000; acc:  69.34; ppl:  3.69; xent: 1.31; lr: 0.00025; 9771/8977 tok/s;  14517 sec
+[2019-05-31 06:03:42,079 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 06:03:57,797 INFO] Validation perplexity: 9.58811
+[2019-05-31 06:03:57,797 INFO] Validation accuracy: 59.0449
+[2019-05-31 06:03:57,797 INFO] Model is improving ppl: 9.88615 --> 9.58811.
+[2019-05-31 06:03:57,797 INFO] Model is improving acc: 58.6073 --> 59.0449.
+[2019-05-31 06:03:57,798 INFO] Saving checkpoint models/fr-en_step_40000.pt
+[2019-05-31 06:07:01,976 INFO] Step 40500/150000; acc:  69.65; ppl:  3.63; xent: 1.29; lr: 0.00025; 9091/8420 tok/s;  14717 sec
+[2019-05-31 06:10:01,852 INFO] Step 41000/150000; acc:  70.06; ppl:  3.57; xent: 1.27; lr: 0.00025; 10069/9332 tok/s;  14897 sec
+[2019-05-31 06:13:05,166 INFO] Step 41500/150000; acc:  69.93; ppl:  3.58; xent: 1.27; lr: 0.00025; 10001/9205 tok/s;  15080 sec
+[2019-05-31 06:16:06,867 INFO] Step 42000/150000; acc:  69.89; ppl:  3.58; xent: 1.28; lr: 0.00025; 10042/9280 tok/s;  15262 sec
+[2019-05-31 06:19:11,153 INFO] Step 42500/150000; acc:  70.20; ppl:  3.52; xent: 1.26; lr: 0.00025; 9636/8812 tok/s;  15446 sec
+[2019-05-31 06:20:21,577 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 06:22:44,325 INFO] Step 43000/150000; acc:  69.80; ppl:  3.59; xent: 1.28; lr: 0.00025; 8368/7809 tok/s;  15659 sec
+[2019-05-31 06:25:47,787 INFO] Step 43500/150000; acc:  70.00; ppl:  3.55; xent: 1.27; lr: 0.00025; 9983/9159 tok/s;  15843 sec
+[2019-05-31 06:28:44,102 INFO] Step 44000/150000; acc:  70.22; ppl:  3.53; xent: 1.26; lr: 0.00025; 10283/9640 tok/s;  16019 sec
+[2019-05-31 06:31:38,572 INFO] Step 44500/150000; acc:  70.59; ppl:  3.44; xent: 1.24; lr: 0.00025; 10481/9555 tok/s;  16194 sec
+[2019-05-31 06:34:37,571 INFO] Step 45000/150000; acc:  70.06; ppl:  3.54; xent: 1.26; lr: 0.00025; 10104/9272 tok/s;  16373 sec
+[2019-05-31 06:34:37,579 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 06:34:50,949 INFO] Validation perplexity: 9.33748
+[2019-05-31 06:34:50,949 INFO] Validation accuracy: 59.4885
+[2019-05-31 06:34:50,950 INFO] Model is improving ppl: 9.58811 --> 9.33748.
+[2019-05-31 06:34:50,950 INFO] Model is improving acc: 59.0449 --> 59.4885.
+[2019-05-31 06:34:50,950 INFO] Saving checkpoint models/fr-en_step_45000.pt
+[2019-05-31 06:37:49,910 INFO] Step 45500/150000; acc:  70.43; ppl:  3.48; xent: 1.25; lr: 0.00025; 9543/8633 tok/s;  16565 sec
+[2019-05-31 06:40:48,198 INFO] Step 46000/150000; acc:  70.41; ppl:  3.47; xent: 1.25; lr: 0.00025; 10233/9488 tok/s;  16743 sec
+[2019-05-31 06:43:47,380 INFO] Step 46500/150000; acc:  70.44; ppl:  3.47; xent: 1.24; lr: 0.00025; 10206/9433 tok/s;  16922 sec
+[2019-05-31 06:46:47,042 INFO] Step 47000/150000; acc:  70.54; ppl:  3.46; xent: 1.24; lr: 0.00025; 10138/9327 tok/s;  17102 sec
+[2019-05-31 06:49:46,415 INFO] Step 47500/150000; acc:  70.58; ppl:  3.44; xent: 1.24; lr: 0.00025; 10237/9323 tok/s;  17281 sec
+[2019-05-31 06:52:46,921 INFO] Step 48000/150000; acc:  70.11; ppl:  3.53; xent: 1.26; lr: 0.00025; 10079/9234 tok/s;  17462 sec
+[2019-05-31 06:55:45,861 INFO] Step 48500/150000; acc:  70.18; ppl:  3.52; xent: 1.26; lr: 0.00025; 10160/9412 tok/s;  17641 sec
+[2019-05-31 06:58:40,356 INFO] Step 49000/150000; acc:  70.53; ppl:  3.46; xent: 1.24; lr: 0.00025; 10403/9601 tok/s;  17815 sec
+[2019-05-31 07:01:38,460 INFO] Step 49500/150000; acc:  70.17; ppl:  3.52; xent: 1.26; lr: 0.00025; 10250/9545 tok/s;  17993 sec
+[2019-05-31 07:04:35,898 INFO] Step 50000/150000; acc:  70.36; ppl:  3.48; xent: 1.25; lr: 0.00013; 10300/9465 tok/s;  18171 sec
+[2019-05-31 07:04:35,905 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 07:04:50,353 INFO] Validation perplexity: 9.16852
+[2019-05-31 07:04:50,353 INFO] Validation accuracy: 59.8255
+[2019-05-31 07:04:50,353 INFO] Model is improving ppl: 9.33748 --> 9.16852.
+[2019-05-31 07:04:50,353 INFO] Model is improving acc: 59.4885 --> 59.8255.
+[2019-05-31 07:04:50,354 INFO] Saving checkpoint models/fr-en_step_50000.pt
+[2019-05-31 07:07:55,868 INFO] Step 50500/150000; acc:  70.44; ppl:  3.47; xent: 1.24; lr: 0.00013; 8692/8031 tok/s;  18371 sec
+[2019-05-31 07:08:02,191 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.2.pt, number of examples: 197758
+[2019-05-31 07:11:01,581 INFO] Step 51000/150000; acc:  70.30; ppl:  3.49; xent: 1.25; lr: 0.00013; 9642/8935 tok/s;  18557 sec
+[2019-05-31 07:14:01,643 INFO] Step 51500/150000; acc:  70.81; ppl:  3.41; xent: 1.23; lr: 0.00013; 10063/9194 tok/s;  18737 sec
+[2019-05-31 07:16:58,897 INFO] Step 52000/150000; acc:  70.76; ppl:  3.41; xent: 1.23; lr: 0.00013; 10151/9316 tok/s;  18914 sec
+[2019-05-31 07:18:07,151 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 07:20:12,107 INFO] Step 52500/150000; acc:  70.57; ppl:  3.44; xent: 1.23; lr: 0.00013; 9401/8765 tok/s;  19107 sec
+[2019-05-31 07:23:12,198 INFO] Step 53000/150000; acc:  70.68; ppl:  3.42; xent: 1.23; lr: 0.00013; 10214/9347 tok/s;  19287 sec
+[2019-05-31 07:26:08,391 INFO] Step 53500/150000; acc:  70.85; ppl:  3.39; xent: 1.22; lr: 0.00013; 10283/9627 tok/s;  19463 sec
+[2019-05-31 07:29:03,747 INFO] Step 54000/150000; acc:  70.73; ppl:  3.41; xent: 1.23; lr: 0.00013; 10274/9393 tok/s;  19639 sec
+[2019-05-31 07:32:04,512 INFO] Step 54500/150000; acc:  70.93; ppl:  3.37; xent: 1.22; lr: 0.00013; 10104/9369 tok/s;  19820 sec
+[2019-05-31 07:35:02,850 INFO] Step 55000/150000; acc:  70.90; ppl:  3.37; xent: 1.22; lr: 0.00013; 10251/9343 tok/s;  19998 sec
+[2019-05-31 07:35:02,857 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 07:35:16,295 INFO] Validation perplexity: 9.01788
+[2019-05-31 07:35:16,295 INFO] Validation accuracy: 60.0266
+[2019-05-31 07:35:16,296 INFO] Model is improving ppl: 9.16852 --> 9.01788.
+[2019-05-31 07:35:16,296 INFO] Model is improving acc: 59.8255 --> 60.0266.
+[2019-05-31 07:35:16,296 INFO] Saving checkpoint models/fr-en_step_55000.pt
+[2019-05-31 07:38:15,384 INFO] Step 55500/150000; acc:  70.98; ppl:  3.36; xent: 1.21; lr: 0.00013; 9470/8718 tok/s;  20190 sec
+[2019-05-31 07:41:14,337 INFO] Step 56000/150000; acc:  71.02; ppl:  3.35; xent: 1.21; lr: 0.00013; 10214/9427 tok/s;  20369 sec
+[2019-05-31 07:44:14,636 INFO] Step 56500/150000; acc:  71.10; ppl:  3.34; xent: 1.21; lr: 0.00013; 10154/9372 tok/s;  20550 sec
+[2019-05-31 07:47:13,295 INFO] Step 57000/150000; acc:  71.14; ppl:  3.33; xent: 1.20; lr: 0.00013; 10268/9389 tok/s;  20728 sec
+[2019-05-31 07:50:13,429 INFO] Step 57500/150000; acc:  70.85; ppl:  3.37; xent: 1.22; lr: 0.00013; 10069/9237 tok/s;  20908 sec
+[2019-05-31 07:53:12,737 INFO] Step 58000/150000; acc:  70.72; ppl:  3.41; xent: 1.23; lr: 0.00013; 10086/9381 tok/s;  21088 sec
+[2019-05-31 07:56:09,480 INFO] Step 58500/150000; acc:  71.21; ppl:  3.33; xent: 1.20; lr: 0.00013; 10308/9525 tok/s;  21264 sec
+[2019-05-31 07:59:10,469 INFO] Step 59000/150000; acc:  70.87; ppl:  3.37; xent: 1.22; lr: 0.00013; 10121/9350 tok/s;  21445 sec
+[2019-05-31 08:02:11,680 INFO] Step 59500/150000; acc:  70.87; ppl:  3.38; xent: 1.22; lr: 0.00013; 10092/9227 tok/s;  21627 sec
+[2019-05-31 08:05:14,912 INFO] Step 60000/150000; acc:  71.22; ppl:  3.32; xent: 1.20; lr: 0.00006; 9533/8780 tok/s;  21810 sec
+[2019-05-31 08:05:14,922 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 08:05:29,329 INFO] Validation perplexity: 8.88955
+[2019-05-31 08:05:29,329 INFO] Validation accuracy: 60.4317
+[2019-05-31 08:05:29,330 INFO] Model is improving ppl: 9.01788 --> 8.88955.
+[2019-05-31 08:05:29,330 INFO] Model is improving acc: 60.0266 --> 60.4317.
+[2019-05-31 08:05:29,330 INFO] Saving checkpoint models/fr-en_step_60000.pt
+[2019-05-31 08:05:50,664 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 08:08:44,352 INFO] Step 60500/150000; acc:  70.72; ppl:  3.40; xent: 1.22; lr: 0.00006; 8661/8046 tok/s;  22019 sec
+[2019-05-31 08:11:45,369 INFO] Step 61000/150000; acc:  70.99; ppl:  3.36; xent: 1.21; lr: 0.00006; 10092/9311 tok/s;  22200 sec
+[2019-05-31 08:14:41,365 INFO] Step 61500/150000; acc:  71.09; ppl:  3.34; xent: 1.21; lr: 0.00006; 10297/9625 tok/s;  22376 sec
+[2019-05-31 08:17:37,119 INFO] Step 62000/150000; acc:  71.52; ppl:  3.26; xent: 1.18; lr: 0.00006; 10442/9501 tok/s;  22552 sec
+[2019-05-31 08:20:36,007 INFO] Step 62500/150000; acc:  70.99; ppl:  3.35; xent: 1.21; lr: 0.00006; 10107/9241 tok/s;  22731 sec
+[2019-05-31 08:23:34,644 INFO] Step 63000/150000; acc:  71.29; ppl:  3.30; xent: 1.20; lr: 0.00006; 10239/9337 tok/s;  22910 sec
+[2019-05-31 08:26:33,049 INFO] Step 63500/150000; acc:  71.21; ppl:  3.30; xent: 1.19; lr: 0.00006; 10241/9491 tok/s;  23088 sec
+[2019-05-31 08:29:34,386 INFO] Step 64000/150000; acc:  71.34; ppl:  3.29; xent: 1.19; lr: 0.00006; 10053/9335 tok/s;  23269 sec
+[2019-05-31 08:32:34,199 INFO] Step 64500/150000; acc:  71.42; ppl:  3.28; xent: 1.19; lr: 0.00006; 10155/9300 tok/s;  23449 sec
+[2019-05-31 08:35:32,430 INFO] Step 65000/150000; acc:  71.42; ppl:  3.28; xent: 1.19; lr: 0.00006; 10275/9342 tok/s;  23627 sec
+[2019-05-31 08:35:32,438 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 08:35:45,912 INFO] Validation perplexity: 8.83312
+[2019-05-31 08:35:45,912 INFO] Validation accuracy: 60.4051
+[2019-05-31 08:35:45,913 INFO] Stalled patience: 4/5
+[2019-05-31 08:35:45,913 INFO] Saving checkpoint models/fr-en_step_65000.pt
+[2019-05-31 08:38:46,053 INFO] Step 65500/150000; acc:  71.14; ppl:  3.32; xent: 1.20; lr: 0.00006; 9414/8640 tok/s;  23821 sec
+[2019-05-31 08:41:44,015 INFO] Step 66000/150000; acc:  71.06; ppl:  3.34; xent: 1.21; lr: 0.00006; 10231/9499 tok/s;  23999 sec
+[2019-05-31 08:44:39,535 INFO] Step 66500/150000; acc:  71.42; ppl:  3.30; xent: 1.19; lr: 0.00006; 10331/9529 tok/s;  24175 sec
+[2019-05-31 08:47:36,193 INFO] Step 67000/150000; acc:  71.33; ppl:  3.29; xent: 1.19; lr: 0.00006; 10345/9661 tok/s;  24351 sec
+[2019-05-31 08:50:35,767 INFO] Step 67500/150000; acc:  71.16; ppl:  3.32; xent: 1.20; lr: 0.00006; 10196/9311 tok/s;  24531 sec
+[2019-05-31 08:53:05,637 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.2.pt, number of examples: 197758
+[2019-05-31 08:53:45,058 INFO] Step 68000/150000; acc:  71.00; ppl:  3.35; xent: 1.21; lr: 0.00006; 9127/8448 tok/s;  24720 sec
+[2019-05-31 08:56:47,095 INFO] Step 68500/150000; acc:  70.97; ppl:  3.36; xent: 1.21; lr: 0.00006; 9873/9096 tok/s;  24902 sec
+[2019-05-31 08:59:45,524 INFO] Step 69000/150000; acc:  71.26; ppl:  3.31; xent: 1.20; lr: 0.00006; 10095/9263 tok/s;  25081 sec
+[2019-05-31 09:02:43,161 INFO] Step 69500/150000; acc:  71.36; ppl:  3.30; xent: 1.19; lr: 0.00006; 10157/9376 tok/s;  25258 sec
+[2019-05-31 09:03:10,601 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 09:05:55,835 INFO] Step 70000/150000; acc:  71.07; ppl:  3.34; xent: 1.21; lr: 0.00003; 9471/8759 tok/s;  25451 sec
+[2019-05-31 09:05:55,842 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 09:06:09,319 INFO] Validation perplexity: 8.79579
+[2019-05-31 09:06:09,319 INFO] Validation accuracy: 60.5795
+[2019-05-31 09:06:09,320 INFO] Model is improving ppl: 8.88955 --> 8.79579.
+[2019-05-31 09:06:09,320 INFO] Model is improving acc: 60.4317 --> 60.5795.
+[2019-05-31 09:06:09,320 INFO] Saving checkpoint models/fr-en_step_70000.pt
+[2019-05-31 09:09:10,476 INFO] Step 70500/150000; acc:  71.21; ppl:  3.32; xent: 1.20; lr: 0.00003; 9429/8691 tok/s;  25645 sec
+[2019-05-31 09:12:06,596 INFO] Step 71000/150000; acc:  71.31; ppl:  3.30; xent: 1.19; lr: 0.00003; 10247/9577 tok/s;  25822 sec
+[2019-05-31 09:15:03,120 INFO] Step 71500/150000; acc:  71.29; ppl:  3.30; xent: 1.19; lr: 0.00003; 10259/9385 tok/s;  25998 sec
+[2019-05-31 09:18:02,493 INFO] Step 72000/150000; acc:  71.42; ppl:  3.28; xent: 1.19; lr: 0.00003; 10198/9396 tok/s;  26177 sec
+[2019-05-31 09:21:02,793 INFO] Step 72500/150000; acc:  71.33; ppl:  3.29; xent: 1.19; lr: 0.00003; 10121/9259 tok/s;  26358 sec
+[2019-05-31 09:23:59,884 INFO] Step 73000/150000; acc:  71.55; ppl:  3.25; xent: 1.18; lr: 0.00003; 10315/9516 tok/s;  26535 sec
+[2019-05-31 09:26:59,026 INFO] Step 73500/150000; acc:  71.55; ppl:  3.25; xent: 1.18; lr: 0.00003; 10194/9419 tok/s;  26714 sec
+[2019-05-31 09:29:58,183 INFO] Step 74000/150000; acc:  71.62; ppl:  3.24; xent: 1.18; lr: 0.00003; 10200/9392 tok/s;  26893 sec
+[2019-05-31 09:32:57,644 INFO] Step 74500/150000; acc:  71.57; ppl:  3.25; xent: 1.18; lr: 0.00003; 10187/9320 tok/s;  27073 sec
+[2019-05-31 09:35:56,226 INFO] Step 75000/150000; acc:  71.47; ppl:  3.27; xent: 1.18; lr: 0.00003; 10177/9351 tok/s;  27251 sec
+[2019-05-31 09:35:56,234 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 09:36:10,790 INFO] Validation perplexity: 8.79728
+[2019-05-31 09:36:10,790 INFO] Validation accuracy: 60.4731
+[2019-05-31 09:36:10,790 INFO] Decreasing patience: 4/5
+[2019-05-31 09:36:10,791 INFO] Saving checkpoint models/fr-en_step_75000.pt
+[2019-05-31 09:39:09,050 INFO] Step 75500/150000; acc:  71.24; ppl:  3.31; xent: 1.20; lr: 0.00003; 9417/8715 tok/s;  27444 sec
+[2019-05-31 09:42:05,010 INFO] Step 76000/150000; acc:  71.49; ppl:  3.28; xent: 1.19; lr: 0.00003; 10358/9578 tok/s;  27620 sec
+[2019-05-31 09:45:02,954 INFO] Step 76500/150000; acc:  71.66; ppl:  3.24; xent: 1.18; lr: 0.00003; 10285/9500 tok/s;  27798 sec
+[2019-05-31 09:48:01,757 INFO] Step 77000/150000; acc:  71.36; ppl:  3.29; xent: 1.19; lr: 0.00003; 10217/9332 tok/s;  27977 sec
+[2019-05-31 09:50:44,844 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 09:51:20,731 INFO] Step 77500/150000; acc:  71.62; ppl:  3.24; xent: 1.18; lr: 0.00003; 8757/8113 tok/s;  28176 sec
+[2019-05-31 09:54:20,510 INFO] Step 78000/150000; acc:  71.08; ppl:  3.33; xent: 1.20; lr: 0.00003; 10126/9415 tok/s;  28356 sec
+[2019-05-31 09:57:19,735 INFO] Step 78500/150000; acc:  71.38; ppl:  3.29; xent: 1.19; lr: 0.00003; 10156/9425 tok/s;  28535 sec
+[2019-05-31 10:00:15,099 INFO] Step 79000/150000; acc:  71.38; ppl:  3.28; xent: 1.19; lr: 0.00003; 10345/9572 tok/s;  28710 sec
+[2019-05-31 10:03:11,796 INFO] Step 79500/150000; acc:  71.60; ppl:  3.24; xent: 1.18; lr: 0.00003; 10347/9411 tok/s;  28887 sec
+[2019-05-31 10:06:09,505 INFO] Step 80000/150000; acc:  71.47; ppl:  3.27; xent: 1.18; lr: 0.00002; 10245/9346 tok/s;  29064 sec
+[2019-05-31 10:06:09,513 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 10:06:22,929 INFO] Validation perplexity: 8.77111
+[2019-05-31 10:06:22,930 INFO] Validation accuracy: 60.5411
+[2019-05-31 10:06:22,930 INFO] Stalled patience: 4/5
+[2019-05-31 10:06:22,930 INFO] Saving checkpoint models/fr-en_step_80000.pt
+[2019-05-31 10:09:23,967 INFO] Step 80500/150000; acc:  71.50; ppl:  3.26; xent: 1.18; lr: 0.00002; 9411/8652 tok/s;  29259 sec
+[2019-05-31 10:12:20,493 INFO] Step 81000/150000; acc:  71.46; ppl:  3.26; xent: 1.18; lr: 0.00002; 10348/9522 tok/s;  29435 sec
+[2019-05-31 10:15:21,734 INFO] Step 81500/150000; acc:  71.75; ppl:  3.22; xent: 1.17; lr: 0.00002; 10058/9340 tok/s;  29617 sec
+[2019-05-31 10:18:20,081 INFO] Step 82000/150000; acc:  71.69; ppl:  3.23; xent: 1.17; lr: 0.00002; 10241/9345 tok/s;  29795 sec
+[2019-05-31 10:21:19,551 INFO] Step 82500/150000; acc:  71.48; ppl:  3.27; xent: 1.18; lr: 0.00002; 10169/9264 tok/s;  29975 sec
+[2019-05-31 10:24:17,818 INFO] Step 83000/150000; acc:  71.50; ppl:  3.26; xent: 1.18; lr: 0.00002; 10238/9458 tok/s;  30153 sec
+[2019-05-31 10:27:16,198 INFO] Step 83500/150000; acc:  71.34; ppl:  3.29; xent: 1.19; lr: 0.00002; 10204/9451 tok/s;  30331 sec
+[2019-05-31 10:30:12,828 INFO] Step 84000/150000; acc:  71.72; ppl:  3.24; xent: 1.17; lr: 0.00002; 10289/9501 tok/s;  30508 sec
+[2019-05-31 10:33:08,115 INFO] Step 84500/150000; acc:  71.57; ppl:  3.25; xent: 1.18; lr: 0.00002; 10435/9707 tok/s;  30683 sec
+[2019-05-31 10:36:09,125 INFO] Step 85000/150000; acc:  71.38; ppl:  3.29; xent: 1.19; lr: 0.00002; 9970/9158 tok/s;  30864 sec
+[2019-05-31 10:36:09,136 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 10:36:23,443 INFO] Validation perplexity: 8.77871
+[2019-05-31 10:36:23,443 INFO] Validation accuracy: 60.479
+[2019-05-31 10:36:23,443 INFO] Stalled patience: 3/5
+[2019-05-31 10:36:23,444 INFO] Saving checkpoint models/fr-en_step_85000.pt
+[2019-05-31 10:38:11,692 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.2.pt, number of examples: 197758
+[2019-05-31 10:39:31,265 INFO] Step 85500/150000; acc:  71.32; ppl:  3.30; xent: 1.19; lr: 0.00002; 8581/7918 tok/s;  31066 sec
+[2019-05-31 10:42:33,626 INFO] Step 86000/150000; acc:  71.29; ppl:  3.30; xent: 1.19; lr: 0.00002; 9924/9172 tok/s;  31249 sec
+[2019-05-31 10:45:30,873 INFO] Step 86500/150000; acc:  71.62; ppl:  3.25; xent: 1.18; lr: 0.00002; 10124/9294 tok/s;  31426 sec
+[2019-05-31 10:48:15,367 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.0.pt, number of examples: 951312
+[2019-05-31 10:48:43,034 INFO] Step 87000/150000; acc:  71.64; ppl:  3.25; xent: 1.18; lr: 0.00002; 9413/8668 tok/s;  31618 sec
+[2019-05-31 10:51:42,149 INFO] Step 87500/150000; acc:  71.34; ppl:  3.29; xent: 1.19; lr: 0.00002; 10242/9463 tok/s;  31797 sec
+[2019-05-31 10:54:40,769 INFO] Step 88000/150000; acc:  71.31; ppl:  3.29; xent: 1.19; lr: 0.00002; 10164/9425 tok/s;  31976 sec
+[2019-05-31 10:57:35,473 INFO] Step 88500/150000; acc:  71.43; ppl:  3.27; xent: 1.19; lr: 0.00002; 10379/9591 tok/s;  32150 sec
+[2019-05-31 11:00:34,655 INFO] Step 89000/150000; acc:  71.35; ppl:  3.29; xent: 1.19; lr: 0.00002; 10113/9314 tok/s;  32330 sec
+[2019-05-31 11:03:34,135 INFO] Step 89500/150000; acc:  71.70; ppl:  3.22; xent: 1.17; lr: 0.00002; 10249/9405 tok/s;  32509 sec
+[2019-05-31 11:06:33,788 INFO] Step 90000/150000; acc:  71.52; ppl:  3.26; xent: 1.18; lr: 0.00001; 10135/9283 tok/s;  32689 sec
+[2019-05-31 11:06:33,796 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 11:06:47,228 INFO] Validation perplexity: 8.76726
+[2019-05-31 11:06:47,229 INFO] Validation accuracy: 60.5145
+[2019-05-31 11:06:47,229 INFO] Stalled patience: 2/5
+[2019-05-31 11:06:47,229 INFO] Saving checkpoint models/fr-en_step_90000.pt
+[2019-05-31 11:09:44,303 INFO] Step 90500/150000; acc:  71.68; ppl:  3.23; xent: 1.17; lr: 0.00001; 9574/8811 tok/s;  32879 sec
+[2019-05-31 11:12:45,171 INFO] Step 91000/150000; acc:  71.69; ppl:  3.22; xent: 1.17; lr: 0.00001; 10139/9377 tok/s;  33060 sec
+[2019-05-31 11:15:43,665 INFO] Step 91500/150000; acc:  71.55; ppl:  3.25; xent: 1.18; lr: 0.00001; 10213/9391 tok/s;  33239 sec
+[2019-05-31 11:18:43,237 INFO] Step 92000/150000; acc:  71.72; ppl:  3.23; xent: 1.17; lr: 0.00001; 10151/9260 tok/s;  33418 sec
+[2019-05-31 11:21:41,745 INFO] Step 92500/150000; acc:  71.51; ppl:  3.26; xent: 1.18; lr: 0.00001; 10171/9493 tok/s;  33597 sec
+[2019-05-31 11:24:37,937 INFO] Step 93000/150000; acc:  71.60; ppl:  3.25; xent: 1.18; lr: 0.00001; 10344/9485 tok/s;  33773 sec
+[2019-05-31 11:27:34,179 INFO] Step 93500/150000; acc:  71.54; ppl:  3.25; xent: 1.18; lr: 0.00001; 10354/9544 tok/s;  33949 sec
+[2019-05-31 11:30:33,091 INFO] Step 94000/150000; acc:  71.62; ppl:  3.24; xent: 1.18; lr: 0.00001; 10206/9433 tok/s;  34128 sec
+[2019-05-31 11:33:32,175 INFO] Step 94500/150000; acc:  71.73; ppl:  3.23; xent: 1.17; lr: 0.00001; 10120/9286 tok/s;  34307 sec
+[2019-05-31 11:35:34,322 INFO] Loading dataset from ./data/onmt-vocab/fr-en.train.1.pt, number of examples: 951214
+[2019-05-31 11:36:51,171 INFO] Step 95000/150000; acc:  71.53; ppl:  3.26; xent: 1.18; lr: 0.00001; 8784/8167 tok/s;  34506 sec
+[2019-05-31 11:36:51,178 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 11:37:04,677 INFO] Validation perplexity: 8.75792
+[2019-05-31 11:37:04,677 INFO] Validation accuracy: 60.5795
+[2019-05-31 11:37:04,677 INFO] Stalled patience: 1/5
+[2019-05-31 11:37:04,678 INFO] Saving checkpoint models/fr-en_step_95000.pt
+[2019-05-31 11:40:04,339 INFO] Step 95500/150000; acc:  71.36; ppl:  3.29; xent: 1.19; lr: 0.00001; 9466/8735 tok/s;  34699 sec
+[2019-05-31 11:43:03,181 INFO] Step 96000/150000; acc:  71.62; ppl:  3.25; xent: 1.18; lr: 0.00001; 10209/9472 tok/s;  34878 sec
+[2019-05-31 11:45:57,508 INFO] Step 96500/150000; acc:  71.63; ppl:  3.25; xent: 1.18; lr: 0.00001; 10397/9598 tok/s;  35052 sec
+[2019-05-31 11:48:54,871 INFO] Step 97000/150000; acc:  71.61; ppl:  3.24; xent: 1.17; lr: 0.00001; 10257/9367 tok/s;  35230 sec
+[2019-05-31 11:51:54,289 INFO] Step 97500/150000; acc:  71.56; ppl:  3.25; xent: 1.18; lr: 0.00001; 10187/9299 tok/s;  35409 sec
+[2019-05-31 11:54:52,714 INFO] Step 98000/150000; acc:  71.63; ppl:  3.24; xent: 1.18; lr: 0.00001; 10229/9408 tok/s;  35588 sec
+[2019-05-31 11:57:50,912 INFO] Step 98500/150000; acc:  71.61; ppl:  3.24; xent: 1.18; lr: 0.00001; 10274/9473 tok/s;  35766 sec
+[2019-05-31 12:00:52,007 INFO] Step 99000/150000; acc:  71.72; ppl:  3.23; xent: 1.17; lr: 0.00001; 10034/9322 tok/s;  35947 sec
+[2019-05-31 12:03:51,664 INFO] Step 99500/150000; acc:  71.83; ppl:  3.21; xent: 1.17; lr: 0.00001; 10220/9298 tok/s;  36127 sec
+[2019-05-31 12:06:49,801 INFO] Step 100000/150000; acc:  71.63; ppl:  3.24; xent: 1.18; lr: 0.00000; 10247/9341 tok/s;  36305 sec
+[2019-05-31 12:06:49,808 INFO] Loading dataset from ./data/onmt-vocab/fr-en.valid.0.pt, number of examples: 1500
+[2019-05-31 12:07:04,447 INFO] Validation perplexity: 8.75219
+[2019-05-31 12:07:04,447 INFO] Validation accuracy: 60.5027
+[2019-05-31 12:07:04,448 INFO] Stalled patience: 0/5
+[2019-05-31 12:07:04,448 INFO] Training finished after stalled validations. Early Stop!
+[2019-05-31 12:07:04,448 INFO] Best model found at step 70000
+[2019-05-31 12:07:04,500 INFO] Saving checkpoint models/fr-en_step_100000.pt

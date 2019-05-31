@@ -3,7 +3,8 @@ Comparison on approaches to Neural Machine Translation on informal languages
 
 ### Data Preparation
 You may run this script and it will download data needed automatically.
-`bash prepare_data.sh`
+
+```bash prepare_data.sh```
 
 For baseline model, we use clean data [here](https://github.com/pmichel31415/mtnt/releases/download/v1.1/clean-data-en-fr.tar.gz) for initial training. The [MTNT](https://github.com/pmichel31415/mtnt) corpus is used for fine-tuning. We use [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py) for training. The clone and install of this toolkit is included in the script.
 
