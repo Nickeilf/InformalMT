@@ -8,7 +8,7 @@ source path.config
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
-mkdir ${DATA_DIR}/onmt-vocab
+
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -56,6 +56,7 @@ else
 fi
 
 # building vocabulary
+# mkdir ${DATA_DIR}/onmt-vocab
 # onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
 # onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
 # python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
