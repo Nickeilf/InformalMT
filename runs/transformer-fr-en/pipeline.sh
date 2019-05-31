@@ -70,13 +70,13 @@ python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
                                  -seed 1234
 
 # training
-python ${ONMT_DIR}/train.py -word_vec_size 1024 \
-                            -encoder_type brnn \
-                            -decoder_type rnn \
-                            -rnn_size 1024 \
-                            -layers 4 \
-                            -bridge \
-                            -global_attention mlp \
+python ${ONMT_DIR}/train.py -word_vec_size 512 \
+                            -encoder_type transformer \
+                            -decoder_type transformer \
+                            -rnn_size 512 \
+                            -layers 6 \
+                            -transformer_ff 2048 \
+                            -heads 8 \
                             -data ${DATA_DIR}/onmt-vocab/${NAME} \
                             -save_model models/${NAME} \
                             -save_checkpoint_steps 5000 \
@@ -84,14 +84,22 @@ python ${ONMT_DIR}/train.py -word_vec_size 1024 \
                             -batch_type tokens \
                             -valid_steps 5000 \
                             -train_steps 150000 \
+                            -warmup_steps 8000 \
                             -early_stopping 5 \
-                            -keep_checkpoint 10 \
+                            -keep_checkpoint 7 \
+                            -accum_count 8 \
                             -optim adam \
-                            -dropout 0.3 \
+                            -adam_beta1 0.9 \
+                            -adam_beta2 0.998 \
+                            -dropout 0.1 \
+                            -max_generator_batches 2 \
                             -label_smoothing 0.1 \
-                            -learning_rate 0.001 \
-                            -decay_steps 10000 \
-                            -start_decay_steps 30000 \
+                            -decay_method noam \
+                            -learning_rate 2.0 \
+                            -max_grad_norm 0.0 \
+                            -param_init 0.0 \
+                            -param_init_glorot 'true' \
+                            -position_encoding 'true' \
                             -report_every 500 \
                             -log_file train_log.log \
                             -tensorboard \
