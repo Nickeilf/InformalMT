@@ -56,18 +56,18 @@ fi
 
 # building vocabulary
 mkdir ${DATA_DIR}/onmt-vocab
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
-                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
-                                 -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
-                                 -src_seq_length 70 \
-                                 -tgt_seq_length 70 \
-                                 -seed 1234
+#onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+#onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+#python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+#                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+#                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+#                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+#                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
+#                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
+#                                 -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
+#                                 -src_seq_length 70 \
+#                                 -tgt_seq_length 70 \
+#                                 -seed 1234
 
 # training
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
@@ -98,8 +98,8 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -learning_rate 2.0 \
                             -max_grad_norm 0.0 \
                             -param_init 0.0 \
-                            -param_init_glorot True \
-                            -position_encoding True \
+                            -param_init_glorot \
+                            -position_encoding \
                             -report_every 500 \
                             -log_file train_log.log \
                             -tensorboard \
