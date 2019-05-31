@@ -4,6 +4,7 @@ mkdir -p data/fine-tune/train data/fine-tune/valid data/fine-tune/test
 # download clean data
 wget https://github.com/pmichel31415/mtnt/releases/download/v1.1/clean-data-en-fr.tar.gz
 tar -xvzf clean-data-en-fr.tar.gz
+python shuffle.py -src train.en -tgt train.fr
 mv train.* data/train
 mv dev.* data/valid
 mv news* data/test
@@ -23,3 +24,12 @@ mv test/test.fr-en.* ../data/fine-tune/test
 cd ..
 rm -rf MTNT
 rm MTNT.1.1.tar.gz
+
+# we use OpenNMT-py for training so you have to clone the repository
+# uncomment the following lines if you it is not installed
+
+# cd runs
+# git clone https://github.com/OpenNMT/OpenNMT-py.git
+# cd OpenNMT-py
+# pip install -r requirements.txt
+# cd ../..

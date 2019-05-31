@@ -55,19 +55,19 @@ else
 fi
 
 # building vocabulary
-# mkdir ${DATA_DIR}/onmt-vocab
-# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
-# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
-# python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-#                                  -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-#                                  -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
-#                                  -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-#                                  -src_vocab ${DATA_DIR}/train.vocab.fr \
-#                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
-#                                  -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
-#                                  -src_seq_length 70 \
-#                                  -tgt_seq_length 70 \
-#                                  -seed 1234
+mkdir ${DATA_DIR}/onmt-vocab
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
+                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
+                                 -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
+                                 -src_seq_length 70 \
+                                 -tgt_seq_length 70 \
+                                 -seed 1234
 
 # training
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
