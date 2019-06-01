@@ -25,6 +25,20 @@ cd ..
 rm -rf MTNT
 rm MTNT.1.1.tar.gz
 
+# download WMT19 Robustness test set
+wget http://www.cs.cmu.edu/~pmichel1/hosting/MTNT2019.tar.gz
+tar -xvzf MTNT2019.tar.gz
+# en -> fr
+cut -f3 MTNT2019/en-fr.final.tsv > data/fine-tune/test/MTNT2019.en-fr.en
+cut -f4 MTNT2019/en-fr.final.tsv > data/fine-tune/test/MTNT2019.en-fr.fr
+# fr -> en
+cut -f3 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.en
+cut -f4 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.fr
+rm -rf MTNT2019
+rm MTNT2019.tar.gz
+
+
+
 # we use OpenNMT-py for training so you have to clone the repository
 # uncomment the following lines if you it is not installed
 

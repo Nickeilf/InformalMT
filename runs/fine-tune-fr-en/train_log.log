@@ -1,0 +1,616 @@
+[2019-06-01 15:55:37,074 INFO] Loading checkpoint from models/fr-en_step_70000.pt
+[2019-06-01 15:55:37,343 INFO] Loading vocab from checkpoint at models/fr-en_step_70000.pt.
+[2019-06-01 15:55:37,343 INFO]  * src vocab size = 16412
+[2019-06-01 15:55:37,343 INFO]  * tgt vocab size = 16500
+[2019-06-01 15:55:37,343 INFO] Building model...
+[2019-06-01 15:55:40,168 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-06-01 15:55:40,168 INFO] encoder: 21004288
+[2019-06-01 15:55:40,168 INFO] decoder: 48448628
+[2019-06-01 15:55:40,168 INFO] * number of parameters: 69452916
+[2019-06-01 15:55:40,596 INFO] Starting training on GPU: [0]
+[2019-06-01 15:55:40,597 INFO] Start training loop and validate every 1000 steps...
+[2019-06-01 15:55:40,707 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 15:55:41,256 INFO] Saving checkpoint models/fr-en.fine-tune_step_70001.pt
+[2019-06-01 15:57:10,240 INFO] Loading checkpoint from models/fr-en_step_70000.pt
+[2019-06-01 15:57:10,505 INFO] Loading vocab from checkpoint at models/fr-en_step_70000.pt.
+[2019-06-01 15:57:10,505 INFO]  * src vocab size = 16412
+[2019-06-01 15:57:10,505 INFO]  * tgt vocab size = 16500
+[2019-06-01 15:57:10,505 INFO] Building model...
+[2019-06-01 15:57:13,395 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-06-01 15:57:13,395 INFO] encoder: 21004288
+[2019-06-01 15:57:13,395 INFO] decoder: 48448628
+[2019-06-01 15:57:13,395 INFO] * number of parameters: 69452916
+[2019-06-01 15:57:13,805 INFO] Starting training on GPU: [0]
+[2019-06-01 15:57:13,805 INFO] Start training loop and validate every 1000 steps...
+[2019-06-01 15:57:13,910 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 15:57:52,436 INFO] Step 70100/100000; acc:  55.24; ppl: 10.36; xent: 2.34; lr: 0.00003; 7696/7382 tok/s;     39 sec
+[2019-06-01 15:58:11,749 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 15:58:30,439 INFO] Step 70200/100000; acc:  57.19; ppl:  9.05; xent: 2.20; lr: 0.00003; 7597/7243 tok/s;     77 sec
+[2019-06-01 15:59:08,103 INFO] Step 70300/100000; acc:  58.45; ppl:  8.43; xent: 2.13; lr: 0.00003; 7249/6980 tok/s;    114 sec
+[2019-06-01 15:59:09,796 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 15:59:46,972 INFO] Step 70400/100000; acc:  60.02; ppl:  7.65; xent: 2.04; lr: 0.00003; 7765/7462 tok/s;    153 sec
+[2019-06-01 16:00:08,006 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:00:25,273 INFO] Step 70500/100000; acc:  60.40; ppl:  7.46; xent: 2.01; lr: 0.00003; 7489/7126 tok/s;    191 sec
+[2019-06-01 16:01:02,760 INFO] Step 70600/100000; acc:  60.92; ppl:  7.25; xent: 1.98; lr: 0.00003; 7342/7066 tok/s;    229 sec
+[2019-06-01 16:01:06,044 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:01:41,420 INFO] Step 70700/100000; acc:  61.98; ppl:  6.81; xent: 1.92; lr: 0.00003; 7787/7472 tok/s;    268 sec
+[2019-06-01 16:02:03,933 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:02:19,591 INFO] Step 70800/100000; acc:  62.15; ppl:  6.74; xent: 1.91; lr: 0.00003; 7533/7182 tok/s;    306 sec
+[2019-06-01 16:02:56,984 INFO] Step 70900/100000; acc:  62.59; ppl:  6.60; xent: 1.89; lr: 0.00003; 7318/7047 tok/s;    343 sec
+[2019-06-01 16:03:01,824 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:03:35,580 INFO] Step 71000/100000; acc:  63.45; ppl:  6.25; xent: 1.83; lr: 0.00003; 7808/7503 tok/s;    382 sec
+[2019-06-01 16:03:35,590 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:07:09,449 INFO] Loading checkpoint from models/fr-en_step_70000.pt
+[2019-06-01 16:07:09,735 INFO] Loading vocab from checkpoint at models/fr-en_step_70000.pt.
+[2019-06-01 16:07:09,735 INFO]  * src vocab size = 16412
+[2019-06-01 16:07:09,735 INFO]  * tgt vocab size = 16500
+[2019-06-01 16:07:09,735 INFO] Building model...
+[2019-06-01 16:07:12,563 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-06-01 16:07:12,564 INFO] encoder: 21004288
+[2019-06-01 16:07:12,564 INFO] decoder: 48448628
+[2019-06-01 16:07:12,564 INFO] * number of parameters: 69452916
+[2019-06-01 16:07:12,980 INFO] Starting training on GPU: [0]
+[2019-06-01 16:07:12,980 INFO] Start training loop and validate every 1000 steps...
+[2019-06-01 16:07:13,087 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:07:51,414 INFO] Step 70100/100000; acc:  55.24; ppl: 10.36; xent: 2.34; lr: 0.00003; 7736/7420 tok/s;     38 sec
+[2019-06-01 16:08:10,731 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:08:29,414 INFO] Step 70200/100000; acc:  57.19; ppl:  9.05; xent: 2.20; lr: 0.00003; 7598/7244 tok/s;     76 sec
+[2019-06-01 16:09:06,733 INFO] Step 70300/100000; acc:  58.45; ppl:  8.43; xent: 2.13; lr: 0.00003; 7316/7044 tok/s;    114 sec
+[2019-06-01 16:09:08,448 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:09:45,324 INFO] Step 70400/100000; acc:  60.03; ppl:  7.65; xent: 2.04; lr: 0.00003; 7821/7516 tok/s;    152 sec
+[2019-06-01 16:10:06,184 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:10:23,396 INFO] Step 70500/100000; acc:  60.40; ppl:  7.46; xent: 2.01; lr: 0.00003; 7534/7169 tok/s;    190 sec
+[2019-06-01 16:11:01,462 INFO] Step 70600/100000; acc:  60.92; ppl:  7.25; xent: 1.98; lr: 0.00003; 7231/6958 tok/s;    228 sec
+[2019-06-01 16:11:04,753 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:11:40,092 INFO] Step 70700/100000; acc:  61.98; ppl:  6.81; xent: 1.92; lr: 0.00003; 7794/7477 tok/s;    267 sec
+[2019-06-01 16:12:02,582 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:12:18,264 INFO] Step 70800/100000; acc:  62.15; ppl:  6.74; xent: 1.91; lr: 0.00003; 7532/7181 tok/s;    305 sec
+[2019-06-01 16:12:55,657 INFO] Step 70900/100000; acc:  62.59; ppl:  6.60; xent: 1.89; lr: 0.00003; 7318/7047 tok/s;    343 sec
+[2019-06-01 16:13:00,489 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:13:34,251 INFO] Step 71000/100000; acc:  63.45; ppl:  6.25; xent: 1.83; lr: 0.00003; 7808/7504 tok/s;    381 sec
+[2019-06-01 16:13:34,261 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:14:44,212 INFO] Loading checkpoint from models/fr-en_step_70000.pt
+[2019-06-01 16:14:44,481 INFO] Loading vocab from checkpoint at models/fr-en_step_70000.pt.
+[2019-06-01 16:14:44,481 INFO]  * src vocab size = 16412
+[2019-06-01 16:14:44,481 INFO]  * tgt vocab size = 16500
+[2019-06-01 16:14:44,481 INFO] Building model...
+[2019-06-01 16:14:47,382 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-06-01 16:14:47,388 INFO] encoder: 21004288
+[2019-06-01 16:14:47,388 INFO] decoder: 48448628
+[2019-06-01 16:14:47,389 INFO] * number of parameters: 69452916
+[2019-06-01 16:14:47,859 INFO] Starting training on GPU: [0]
+[2019-06-01 16:14:47,859 INFO] Start training loop and validate every 1000 steps...
+[2019-06-01 16:14:47,972 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:15:18,230 INFO] Step 70100/100000; acc:  55.02; ppl: 10.55; xent: 2.36; lr: 0.00003; 7527/7255 tok/s;     30 sec
+[2019-06-01 16:15:46,545 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:15:48,821 INFO] Step 70200/100000; acc:  56.97; ppl:  9.20; xent: 2.22; lr: 0.00003; 7394/7061 tok/s;     61 sec
+[2019-06-01 16:16:18,551 INFO] Step 70300/100000; acc:  58.64; ppl:  8.32; xent: 2.12; lr: 0.00003; 7675/7393 tok/s;     91 sec
+[2019-06-01 16:16:44,896 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:16:49,276 INFO] Step 70400/100000; acc:  59.21; ppl:  8.05; xent: 2.09; lr: 0.00003; 7302/6977 tok/s;    121 sec
+[2019-06-01 16:17:18,918 INFO] Step 70500/100000; acc:  60.12; ppl:  7.58; xent: 2.03; lr: 0.00003; 7617/7325 tok/s;    151 sec
+[2019-06-01 16:17:43,263 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:17:49,666 INFO] Step 70600/100000; acc:  60.65; ppl:  7.38; xent: 2.00; lr: 0.00003; 7367/7032 tok/s;    182 sec
+[2019-06-01 16:18:19,470 INFO] Step 70700/100000; acc:  61.43; ppl:  7.04; xent: 1.95; lr: 0.00003; 7584/7331 tok/s;    212 sec
+[2019-06-01 16:18:41,607 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:18:50,297 INFO] Step 70800/100000; acc:  61.69; ppl:  6.94; xent: 1.94; lr: 0.00003; 7372/7032 tok/s;    242 sec
+[2019-06-01 16:19:20,299 INFO] Step 70900/100000; acc:  62.32; ppl:  6.67; xent: 1.90; lr: 0.00003; 7472/7183 tok/s;    272 sec
+[2019-06-01 16:19:40,013 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:19:50,931 INFO] Step 71000/100000; acc:  62.87; ppl:  6.50; xent: 1.87; lr: 0.00003; 7565/7220 tok/s;    303 sec
+[2019-06-01 16:19:50,941 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:22:32,393 INFO] Loading checkpoint from models/fr-en_step_70000.pt
+[2019-06-01 16:22:32,666 INFO] Loading vocab from checkpoint at models/fr-en_step_70000.pt.
+[2019-06-01 16:22:32,666 INFO]  * src vocab size = 16412
+[2019-06-01 16:22:32,666 INFO]  * tgt vocab size = 16500
+[2019-06-01 16:22:32,666 INFO] Building model...
+[2019-06-01 16:22:35,434 INFO] NMTModel(
+  (encoder): RNNEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16412, 512, padding_idx=1)
+        )
+      )
+    )
+    (rnn): LSTM(512, 512, num_layers=2, dropout=0.3, bidirectional=True)
+    (bridge): ModuleList(
+      (0): Linear(in_features=1024, out_features=1024, bias=True)
+      (1): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(16500, 512, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3)
+      (layers): ModuleList(
+        (0): LSTMCell(1536, 1024)
+        (1): LSTMCell(1024, 1024)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_context): Linear(in_features=1024, out_features=1024, bias=False)
+      (linear_query): Linear(in_features=1024, out_features=1024, bias=True)
+      (v): Linear(in_features=1024, out_features=1, bias=False)
+      (linear_out): Linear(in_features=2048, out_features=1024, bias=True)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=1024, out_features=16500, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+[2019-06-01 16:22:35,435 INFO] encoder: 21004288
+[2019-06-01 16:22:35,435 INFO] decoder: 48448628
+[2019-06-01 16:22:35,435 INFO] * number of parameters: 69452916
+[2019-06-01 16:22:35,856 INFO] Starting training on GPU: [0]
+[2019-06-01 16:22:35,856 INFO] Start training loop and validate every 1000 steps...
+[2019-06-01 16:22:35,964 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:23:14,173 INFO] Step 70100/100000; acc:  55.24; ppl: 10.36; xent: 2.34; lr: 0.00003; 7759/7442 tok/s;     38 sec
+[2019-06-01 16:23:33,534 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:23:52,302 INFO] Step 70200/100000; acc:  57.19; ppl:  9.05; xent: 2.20; lr: 0.00003; 7572/7219 tok/s;     76 sec
+[2019-06-01 16:24:29,742 INFO] Step 70300/100000; acc:  58.45; ppl:  8.43; xent: 2.13; lr: 0.00003; 7293/7021 tok/s;    114 sec
+[2019-06-01 16:24:31,450 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:25:08,433 INFO] Step 70400/100000; acc:  60.03; ppl:  7.65; xent: 2.04; lr: 0.00003; 7800/7496 tok/s;    153 sec
+[2019-06-01 16:25:29,339 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:25:46,462 INFO] Step 70500/100000; acc:  60.40; ppl:  7.46; xent: 2.01; lr: 0.00003; 7542/7177 tok/s;    191 sec
+[2019-06-01 16:26:23,982 INFO] Step 70600/100000; acc:  60.92; ppl:  7.25; xent: 1.98; lr: 0.00003; 7336/7059 tok/s;    228 sec
+[2019-06-01 16:26:27,289 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:27:02,716 INFO] Step 70700/100000; acc:  61.98; ppl:  6.81; xent: 1.92; lr: 0.00003; 7772/7457 tok/s;    267 sec
+[2019-06-01 16:27:25,248 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:27:40,932 INFO] Step 70800/100000; acc:  62.15; ppl:  6.74; xent: 1.91; lr: 0.00003; 7524/7173 tok/s;    305 sec
+[2019-06-01 16:28:18,344 INFO] Step 70900/100000; acc:  62.59; ppl:  6.60; xent: 1.89; lr: 0.00003; 7314/7043 tok/s;    342 sec
+[2019-06-01 16:28:23,183 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:28:56,952 INFO] Step 71000/100000; acc:  63.45; ppl:  6.25; xent: 1.83; lr: 0.00003; 7805/7501 tok/s;    381 sec
+[2019-06-01 16:28:56,962 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:29:41,168 INFO] Validation perplexity: 20.5061
+[2019-06-01 16:29:41,168 INFO] Validation accuracy: 48.8332
+[2019-06-01 16:29:41,168 INFO] Model is improving ppl: inf --> 20.5061.
+[2019-06-01 16:29:41,169 INFO] Model is improving acc: -inf --> 48.8332.
+[2019-06-01 16:29:41,169 INFO] Saving checkpoint models/fr-en.fine-tune_step_71000.pt
+[2019-06-01 16:30:05,970 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:30:19,998 INFO] Step 71100/100000; acc:  63.50; ppl:  6.23; xent: 1.83; lr: 0.00003; 3446/3292 tok/s;    464 sec
+[2019-06-01 16:30:57,710 INFO] Step 71200/100000; acc:  63.82; ppl:  6.14; xent: 1.81; lr: 0.00003; 7327/7026 tok/s;    502 sec
+[2019-06-01 16:31:04,003 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:31:36,147 INFO] Step 71300/100000; acc:  64.72; ppl:  5.82; xent: 1.76; lr: 0.00003; 7790/7474 tok/s;    540 sec
+[2019-06-01 16:32:02,006 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:32:14,682 INFO] Step 71400/100000; acc:  64.50; ppl:  5.86; xent: 1.77; lr: 0.00003; 7451/7111 tok/s;    579 sec
+[2019-06-01 16:32:52,316 INFO] Step 71500/100000; acc:  64.81; ppl:  5.75; xent: 1.75; lr: 0.00003; 7430/7134 tok/s;    616 sec
+[2019-06-01 16:33:00,019 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:33:30,861 INFO] Step 71600/100000; acc:  65.40; ppl:  5.56; xent: 1.72; lr: 0.00003; 7696/7372 tok/s;    655 sec
+[2019-06-01 16:33:58,031 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:34:09,350 INFO] Step 71700/100000; acc:  65.42; ppl:  5.55; xent: 1.71; lr: 0.00003; 7378/7064 tok/s;    693 sec
+[2019-06-01 16:34:46,717 INFO] Step 71800/100000; acc:  65.97; ppl:  5.39; xent: 1.68; lr: 0.00003; 7601/7311 tok/s;    731 sec
+[2019-06-01 16:34:56,023 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:35:25,752 INFO] Step 71900/100000; acc:  65.99; ppl:  5.36; xent: 1.68; lr: 0.00003; 7578/7230 tok/s;    770 sec
+[2019-06-01 16:35:53,969 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:36:03,622 INFO] Step 72000/100000; acc:  66.27; ppl:  5.24; xent: 1.66; lr: 0.00003; 7446/7146 tok/s;    808 sec
+[2019-06-01 16:36:03,632 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:36:47,891 INFO] Validation perplexity: 18.4468
+[2019-06-01 16:36:47,891 INFO] Validation accuracy: 50.4747
+[2019-06-01 16:36:47,891 INFO] Model is improving ppl: 20.5061 --> 18.4468.
+[2019-06-01 16:36:47,891 INFO] Model is improving acc: 48.8332 --> 50.4747.
+[2019-06-01 16:36:47,892 INFO] Saving checkpoint models/fr-en.fine-tune_step_72000.pt
+[2019-06-01 16:37:25,903 INFO] Step 72100/100000; acc:  66.54; ppl:  5.18; xent: 1.64; lr: 0.00003; 3425/3305 tok/s;    890 sec
+[2019-06-01 16:37:36,869 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:38:04,987 INFO] Step 72200/100000; acc:  66.70; ppl:  5.13; xent: 1.64; lr: 0.00003; 7581/7219 tok/s;    929 sec
+[2019-06-01 16:38:34,842 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:38:42,768 INFO] Step 72300/100000; acc:  67.02; ppl:  5.02; xent: 1.61; lr: 0.00003; 7453/7157 tok/s;    967 sec
+[2019-06-01 16:39:20,631 INFO] Step 72400/100000; acc:  67.28; ppl:  4.97; xent: 1.60; lr: 0.00003; 7581/7290 tok/s;   1005 sec
+[2019-06-01 16:39:32,814 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:39:59,373 INFO] Step 72500/100000; acc:  67.49; ppl:  4.92; xent: 1.59; lr: 0.00003; 7536/7182 tok/s;   1044 sec
+[2019-06-01 16:40:30,821 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:40:37,098 INFO] Step 72600/100000; acc:  67.74; ppl:  4.82; xent: 1.57; lr: 0.00003; 7498/7207 tok/s;   1081 sec
+[2019-06-01 16:41:15,076 INFO] Step 72700/100000; acc:  67.84; ppl:  4.79; xent: 1.57; lr: 0.00003; 7554/7266 tok/s;   1119 sec
+[2019-06-01 16:41:28,789 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:41:53,909 INFO] Step 72800/100000; acc:  68.12; ppl:  4.73; xent: 1.55; lr: 0.00003; 7510/7152 tok/s;   1158 sec
+[2019-06-01 16:42:26,783 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:42:31,807 INFO] Step 72900/100000; acc:  68.33; ppl:  4.65; xent: 1.54; lr: 0.00003; 7517/7205 tok/s;   1196 sec
+[2019-06-01 16:43:09,520 INFO] Step 73000/100000; acc:  68.58; ppl:  4.61; xent: 1.53; lr: 0.00003; 7565/7304 tok/s;   1234 sec
+[2019-06-01 16:43:09,531 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:43:53,828 INFO] Validation perplexity: 17.5683
+[2019-06-01 16:43:53,829 INFO] Validation accuracy: 51.1987
+[2019-06-01 16:43:53,829 INFO] Model is improving ppl: 18.4468 --> 17.5683.
+[2019-06-01 16:43:53,829 INFO] Model is improving acc: 50.4747 --> 51.1987.
+[2019-06-01 16:43:53,829 INFO] Saving checkpoint models/fr-en.fine-tune_step_73000.pt
+[2019-06-01 16:44:09,766 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:44:33,560 INFO] Step 73100/100000; acc:  68.69; ppl:  4.57; xent: 1.52; lr: 0.00003; 3503/3325 tok/s;   1318 sec
+[2019-06-01 16:45:07,793 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:45:11,338 INFO] Step 73200/100000; acc:  68.90; ppl:  4.50; xent: 1.50; lr: 0.00003; 7422/7134 tok/s;   1355 sec
+[2019-06-01 16:45:49,206 INFO] Step 73300/100000; acc:  69.19; ppl:  4.43; xent: 1.49; lr: 0.00003; 7692/7388 tok/s;   1393 sec
+[2019-06-01 16:46:06,129 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:46:28,267 INFO] Step 73400/100000; acc:  69.13; ppl:  4.45; xent: 1.49; lr: 0.00003; 7434/7091 tok/s;   1432 sec
+[2019-06-01 16:47:04,243 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:47:06,066 INFO] Step 73500/100000; acc:  69.40; ppl:  4.39; xent: 1.48; lr: 0.00003; 7340/7066 tok/s;   1470 sec
+[2019-06-01 16:47:44,553 INFO] Step 73600/100000; acc:  69.86; ppl:  4.28; xent: 1.45; lr: 0.00003; 7661/7328 tok/s;   1509 sec
+[2019-06-01 16:48:03,206 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:48:24,450 INFO] Step 73700/100000; acc:  69.70; ppl:  4.29; xent: 1.46; lr: 0.00003; 7251/6943 tok/s;   1549 sec
+[2019-06-01 16:49:01,919 INFO] Step 73800/100000; acc:  69.95; ppl:  4.26; xent: 1.45; lr: 0.00003; 7353/7072 tok/s;   1586 sec
+[2019-06-01 16:49:02,109 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:49:40,701 INFO] Step 73900/100000; acc:  70.37; ppl:  4.14; xent: 1.42; lr: 0.00003; 7666/7353 tok/s;   1625 sec
+[2019-06-01 16:50:00,171 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:50:18,988 INFO] Step 74000/100000; acc:  70.24; ppl:  4.18; xent: 1.43; lr: 0.00003; 7541/7189 tok/s;   1663 sec
+[2019-06-01 16:50:18,999 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:51:03,654 INFO] Validation perplexity: 16.9957
+[2019-06-01 16:51:03,655 INFO] Validation accuracy: 51.6535
+[2019-06-01 16:51:03,655 INFO] Model is improving ppl: 17.5683 --> 16.9957.
+[2019-06-01 16:51:03,655 INFO] Model is improving acc: 51.1987 --> 51.6535.
+[2019-06-01 16:51:03,655 INFO] Saving checkpoint models/fr-en.fine-tune_step_74000.pt
+[2019-06-01 16:51:41,880 INFO] Step 74100/100000; acc:  70.31; ppl:  4.16; xent: 1.42; lr: 0.00003; 3294/3171 tok/s;   1746 sec
+[2019-06-01 16:51:43,600 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:52:21,708 INFO] Step 74200/100000; acc:  70.88; ppl:  4.03; xent: 1.39; lr: 0.00003; 7578/7282 tok/s;   1786 sec
+[2019-06-01 16:52:43,813 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:53:01,750 INFO] Step 74300/100000; acc:  70.84; ppl:  4.04; xent: 1.40; lr: 0.00003; 7163/6817 tok/s;   1826 sec
+[2019-06-01 16:53:41,016 INFO] Step 74400/100000; acc:  70.82; ppl:  4.04; xent: 1.40; lr: 0.00003; 7009/6745 tok/s;   1865 sec
+[2019-06-01 16:53:44,455 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:54:21,707 INFO] Step 74500/100000; acc:  71.31; ppl:  3.93; xent: 1.37; lr: 0.00003; 7399/7099 tok/s;   1906 sec
+[2019-06-01 16:54:45,481 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:55:01,908 INFO] Step 74600/100000; acc:  71.22; ppl:  3.94; xent: 1.37; lr: 0.00003; 7152/6819 tok/s;   1946 sec
+[2019-06-01 16:55:41,367 INFO] Step 74700/100000; acc:  71.39; ppl:  3.92; xent: 1.37; lr: 0.00003; 6935/6678 tok/s;   1986 sec
+[2019-06-01 16:55:46,403 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:56:20,184 INFO] Step 74800/100000; acc:  71.80; ppl:  3.83; xent: 1.34; lr: 0.00003; 7763/7460 tok/s;   2024 sec
+[2019-06-01 16:56:44,343 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:56:58,333 INFO] Step 74900/100000; acc:  71.67; ppl:  3.85; xent: 1.35; lr: 0.00003; 7501/7166 tok/s;   2062 sec
+[2019-06-01 16:57:35,971 INFO] Step 75000/100000; acc:  71.78; ppl:  3.84; xent: 1.34; lr: 0.00003; 7341/7040 tok/s;   2100 sec
+[2019-06-01 16:57:35,981 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 16:58:20,160 INFO] Validation perplexity: 16.6574
+[2019-06-01 16:58:20,160 INFO] Validation accuracy: 51.9567
+[2019-06-01 16:58:20,160 INFO] Model is improving ppl: 16.9957 --> 16.6574.
+[2019-06-01 16:58:20,160 INFO] Model is improving acc: 51.6535 --> 51.9567.
+[2019-06-01 16:58:20,160 INFO] Saving checkpoint models/fr-en.fine-tune_step_75000.pt
+[2019-06-01 16:58:27,036 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:58:59,180 INFO] Step 75100/100000; acc:  72.33; ppl:  3.72; xent: 1.31; lr: 0.00003; 3599/3453 tok/s;   2183 sec
+[2019-06-01 16:59:25,009 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 16:59:37,684 INFO] Step 75200/100000; acc:  72.07; ppl:  3.76; xent: 1.33; lr: 0.00003; 7457/7117 tok/s;   2222 sec
+[2019-06-01 17:00:15,245 INFO] Step 75300/100000; acc:  72.25; ppl:  3.73; xent: 1.32; lr: 0.00003; 7444/7148 tok/s;   2259 sec
+[2019-06-01 17:00:22,946 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:00:53,734 INFO] Step 75400/100000; acc:  72.61; ppl:  3.66; xent: 1.30; lr: 0.00003; 7707/7383 tok/s;   2298 sec
+[2019-06-01 17:01:20,835 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:01:32,149 INFO] Step 75500/100000; acc:  72.53; ppl:  3.66; xent: 1.30; lr: 0.00003; 7392/7077 tok/s;   2336 sec
+[2019-06-01 17:02:09,452 INFO] Step 75600/100000; acc:  72.78; ppl:  3.62; xent: 1.29; lr: 0.00003; 7614/7323 tok/s;   2374 sec
+[2019-06-01 17:02:18,755 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:02:48,464 INFO] Step 75700/100000; acc:  72.85; ppl:  3.61; xent: 1.28; lr: 0.00003; 7582/7235 tok/s;   2413 sec
+[2019-06-01 17:03:16,656 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:03:26,271 INFO] Step 75800/100000; acc:  73.05; ppl:  3.57; xent: 1.27; lr: 0.00003; 7458/7158 tok/s;   2450 sec
+[2019-06-01 17:04:03,628 INFO] Step 75900/100000; acc:  73.13; ppl:  3.55; xent: 1.27; lr: 0.00003; 7544/7279 tok/s;   2488 sec
+[2019-06-01 17:04:14,548 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:04:42,635 INFO] Step 76000/100000; acc:  73.25; ppl:  3.53; xent: 1.26; lr: 0.00003; 7596/7234 tok/s;   2527 sec
+[2019-06-01 17:04:42,645 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:05:26,817 INFO] Validation perplexity: 16.3176
+[2019-06-01 17:05:26,817 INFO] Validation accuracy: 52.198
+[2019-06-01 17:05:26,818 INFO] Model is improving ppl: 16.6574 --> 16.3176.
+[2019-06-01 17:05:26,818 INFO] Model is improving acc: 51.9567 --> 52.198.
+[2019-06-01 17:05:26,818 INFO] Saving checkpoint models/fr-en.fine-tune_step_76000.pt
+[2019-06-01 17:05:57,294 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:06:05,214 INFO] Step 76100/100000; acc:  73.41; ppl:  3.49; xent: 1.25; lr: 0.00003; 3410/3274 tok/s;   2609 sec
+[2019-06-01 17:06:43,371 INFO] Step 76200/100000; acc:  73.51; ppl:  3.47; xent: 1.24; lr: 0.00003; 7522/7234 tok/s;   2648 sec
+[2019-06-01 17:06:55,536 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:07:22,059 INFO] Step 76300/100000; acc:  73.61; ppl:  3.46; xent: 1.24; lr: 0.00003; 7546/7192 tok/s;   2686 sec
+[2019-06-01 17:07:53,772 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:08:00,061 INFO] Step 76400/100000; acc:  73.86; ppl:  3.42; xent: 1.23; lr: 0.00003; 7444/7154 tok/s;   2724 sec
+[2019-06-01 17:08:38,182 INFO] Step 76500/100000; acc:  73.90; ppl:  3.41; xent: 1.23; lr: 0.00003; 7526/7239 tok/s;   2762 sec
+[2019-06-01 17:08:52,149 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:09:17,370 INFO] Step 76600/100000; acc:  74.07; ppl:  3.38; xent: 1.22; lr: 0.00003; 7442/7088 tok/s;   2802 sec
+[2019-06-01 17:09:50,564 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:09:55,618 INFO] Step 76700/100000; acc:  74.26; ppl:  3.34; xent: 1.21; lr: 0.00003; 7448/7139 tok/s;   2840 sec
+[2019-06-01 17:10:33,255 INFO] Step 76800/100000; acc:  74.26; ppl:  3.34; xent: 1.21; lr: 0.00003; 7581/7319 tok/s;   2877 sec
+[2019-06-01 17:10:48,540 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:11:12,272 INFO] Step 76900/100000; acc:  74.47; ppl:  3.31; xent: 1.20; lr: 0.00003; 7544/7161 tok/s;   2916 sec
+[2019-06-01 17:11:46,453 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:11:49,992 INFO] Step 77000/100000; acc:  74.52; ppl:  3.28; xent: 1.19; lr: 0.00003; 7433/7145 tok/s;   2954 sec
+[2019-06-01 17:11:50,002 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:12:34,219 INFO] Validation perplexity: 16.1499
+[2019-06-01 17:12:34,219 INFO] Validation accuracy: 52.4713
+[2019-06-01 17:12:34,219 INFO] Model is improving ppl: 16.3176 --> 16.1499.
+[2019-06-01 17:12:34,219 INFO] Model is improving acc: 52.198 --> 52.4713.
+[2019-06-01 17:12:34,220 INFO] Saving checkpoint models/fr-en.fine-tune_step_77000.pt
+[2019-06-01 17:13:12,689 INFO] Step 77100/100000; acc:  74.76; ppl:  3.25; xent: 1.18; lr: 0.00003; 3522/3383 tok/s;   3037 sec
+[2019-06-01 17:13:29,261 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:13:51,327 INFO] Step 77200/100000; acc:  74.70; ppl:  3.26; xent: 1.18; lr: 0.00003; 7515/7169 tok/s;   3075 sec
+[2019-06-01 17:14:27,182 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:14:29,009 INFO] Step 77300/100000; acc:  74.80; ppl:  3.23; xent: 1.17; lr: 0.00003; 7362/7088 tok/s;   3113 sec
+[2019-06-01 17:15:07,241 INFO] Step 77400/100000; acc:  75.20; ppl:  3.18; xent: 1.16; lr: 0.00003; 7713/7377 tok/s;   3151 sec
+[2019-06-01 17:15:25,081 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:15:45,538 INFO] Step 77500/100000; acc:  75.05; ppl:  3.20; xent: 1.16; lr: 0.00003; 7554/7232 tok/s;   3190 sec
+[2019-06-01 17:16:22,831 INFO] Step 77600/100000; acc:  75.21; ppl:  3.17; xent: 1.15; lr: 0.00003; 7388/7105 tok/s;   3227 sec
+[2019-06-01 17:16:22,977 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:17:01,472 INFO] Step 77700/100000; acc:  75.56; ppl:  3.12; xent: 1.14; lr: 0.00003; 7694/7380 tok/s;   3266 sec
+[2019-06-01 17:17:20,902 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:17:39,694 INFO] Step 77800/100000; acc:  75.40; ppl:  3.14; xent: 1.14; lr: 0.00003; 7554/7202 tok/s;   3304 sec
+[2019-06-01 17:18:17,211 INFO] Step 77900/100000; acc:  75.44; ppl:  3.14; xent: 1.14; lr: 0.00003; 7278/7007 tok/s;   3341 sec
+[2019-06-01 17:18:18,902 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:18:55,935 INFO] Step 78000/100000; acc:  75.88; ppl:  3.06; xent: 1.12; lr: 0.00003; 7794/7490 tok/s;   3380 sec
+[2019-06-01 17:18:55,945 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:19:40,177 INFO] Validation perplexity: 16.0974
+[2019-06-01 17:19:40,177 INFO] Validation accuracy: 52.6667
+[2019-06-01 17:19:40,177 INFO] Model is improving ppl: 16.1499 --> 16.0974.
+[2019-06-01 17:19:40,177 INFO] Model is improving acc: 52.4713 --> 52.6667.
+[2019-06-01 17:19:40,177 INFO] Saving checkpoint models/fr-en.fine-tune_step_78000.pt
+[2019-06-01 17:20:01,766 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:20:19,190 INFO] Step 78100/100000; acc:  75.77; ppl:  3.08; xent: 1.12; lr: 0.00003; 3445/3278 tok/s;   3463 sec
+[2019-06-01 17:20:57,160 INFO] Step 78200/100000; acc:  75.97; ppl:  3.06; xent: 1.12; lr: 0.00003; 7249/6976 tok/s;   3501 sec
+[2019-06-01 17:21:00,458 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:21:35,951 INFO] Step 78300/100000; acc:  76.23; ppl:  3.01; xent: 1.10; lr: 0.00003; 7761/7446 tok/s;   3540 sec
+[2019-06-01 17:21:58,958 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:22:15,016 INFO] Step 78400/100000; acc:  76.12; ppl:  3.03; xent: 1.11; lr: 0.00003; 7360/7017 tok/s;   3579 sec
+[2019-06-01 17:22:52,667 INFO] Step 78500/100000; acc:  76.29; ppl:  3.00; xent: 1.10; lr: 0.00003; 7268/6998 tok/s;   3617 sec
+[2019-06-01 17:22:57,491 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:23:31,240 INFO] Step 78600/100000; acc:  76.50; ppl:  2.97; xent: 1.09; lr: 0.00003; 7812/7508 tok/s;   3655 sec
+[2019-06-01 17:23:55,532 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:24:09,527 INFO] Step 78700/100000; acc:  76.41; ppl:  2.98; xent: 1.09; lr: 0.00003; 7474/7140 tok/s;   3694 sec
+[2019-06-01 17:24:47,171 INFO] Step 78800/100000; acc:  76.49; ppl:  2.97; xent: 1.09; lr: 0.00003; 7340/7039 tok/s;   3731 sec
+[2019-06-01 17:24:53,448 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:25:25,547 INFO] Step 78900/100000; acc:  76.91; ppl:  2.90; xent: 1.06; lr: 0.00003; 7803/7486 tok/s;   3770 sec
+[2019-06-01 17:25:51,357 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:26:04,016 INFO] Step 79000/100000; acc:  76.64; ppl:  2.93; xent: 1.08; lr: 0.00003; 7464/7124 tok/s;   3808 sec
+[2019-06-01 17:26:04,026 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:26:48,190 INFO] Validation perplexity: 16.2904
+[2019-06-01 17:26:48,190 INFO] Validation accuracy: 52.569
+[2019-06-01 17:26:48,190 INFO] Decreasing patience: 4/5
+[2019-06-01 17:26:48,191 INFO] Saving checkpoint models/fr-en.fine-tune_step_79000.pt
+[2019-06-01 17:27:26,422 INFO] Step 79100/100000; acc:  76.93; ppl:  2.91; xent: 1.07; lr: 0.00003; 3393/3258 tok/s;   3891 sec
+[2019-06-01 17:27:34,131 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:28:04,892 INFO] Step 79200/100000; acc:  77.14; ppl:  2.87; xent: 1.05; lr: 0.00003; 7711/7386 tok/s;   3929 sec
+[2019-06-01 17:28:31,997 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:28:43,298 INFO] Step 79300/100000; acc:  77.00; ppl:  2.88; xent: 1.06; lr: 0.00003; 7394/7079 tok/s;   3967 sec
+[2019-06-01 17:29:20,596 INFO] Step 79400/100000; acc:  77.25; ppl:  2.85; xent: 1.05; lr: 0.00003; 7614/7324 tok/s;   4005 sec
+[2019-06-01 17:29:29,899 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:29:59,661 INFO] Step 79500/100000; acc:  77.42; ppl:  2.84; xent: 1.04; lr: 0.00003; 7572/7225 tok/s;   4044 sec
+[2019-06-01 17:30:27,844 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:30:37,478 INFO] Step 79600/100000; acc:  77.41; ppl:  2.82; xent: 1.04; lr: 0.00003; 7456/7156 tok/s;   4082 sec
+[2019-06-01 17:31:14,841 INFO] Step 79700/100000; acc:  77.48; ppl:  2.81; xent: 1.03; lr: 0.00003; 7543/7278 tok/s;   4119 sec
+[2019-06-01 17:31:25,777 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:31:53,855 INFO] Step 79800/100000; acc:  77.69; ppl:  2.80; xent: 1.03; lr: 0.00003; 7595/7232 tok/s;   4158 sec
+[2019-06-01 17:32:23,656 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:32:31,572 INFO] Step 79900/100000; acc:  77.82; ppl:  2.78; xent: 1.02; lr: 0.00003; 7466/7169 tok/s;   4196 sec
+[2019-06-01 17:33:09,405 INFO] Step 80000/100000; acc:  77.79; ppl:  2.77; xent: 1.02; lr: 0.00002; 7587/7296 tok/s;   4234 sec
+[2019-06-01 17:33:09,415 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:33:53,592 INFO] Validation perplexity: 16.3786
+[2019-06-01 17:33:53,592 INFO] Validation accuracy: 52.6149
+[2019-06-01 17:33:53,592 INFO] Decreasing patience: 3/5
+[2019-06-01 17:33:53,592 INFO] Saving checkpoint models/fr-en.fine-tune_step_80000.pt
+[2019-06-01 17:34:06,427 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:34:32,946 INFO] Step 80100/100000; acc:  78.03; ppl:  2.74; xent: 1.01; lr: 0.00002; 3495/3331 tok/s;   4317 sec
+[2019-06-01 17:35:04,363 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:35:10,638 INFO] Step 80200/100000; acc:  78.04; ppl:  2.74; xent: 1.01; lr: 0.00002; 7505/7213 tok/s;   4355 sec
+[2019-06-01 17:35:48,611 INFO] Step 80300/100000; acc:  78.03; ppl:  2.74; xent: 1.01; lr: 0.00002; 7555/7267 tok/s;   4393 sec
+[2019-06-01 17:36:02,300 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:36:27,394 INFO] Step 80400/100000; acc:  78.19; ppl:  2.73; xent: 1.00; lr: 0.00002; 7520/7162 tok/s;   4432 sec
+[2019-06-01 17:37:00,219 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:37:05,238 INFO] Step 80500/100000; acc:  78.15; ppl:  2.71; xent: 1.00; lr: 0.00002; 7527/7215 tok/s;   4469 sec
+[2019-06-01 17:37:42,862 INFO] Step 80600/100000; acc:  78.21; ppl:  2.71; xent: 1.00; lr: 0.00002; 7583/7322 tok/s;   4507 sec
+[2019-06-01 17:37:58,164 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:38:21,936 INFO] Step 80700/100000; acc:  78.33; ppl:  2.71; xent: 1.00; lr: 0.00002; 7534/7151 tok/s;   4546 sec
+[2019-06-01 17:38:56,116 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:38:59,649 INFO] Step 80800/100000; acc:  78.40; ppl:  2.69; xent: 0.99; lr: 0.00002; 7434/7146 tok/s;   4584 sec
+[2019-06-01 17:39:37,458 INFO] Step 80900/100000; acc:  78.45; ppl:  2.69; xent: 0.99; lr: 0.00002; 7703/7399 tok/s;   4622 sec
+[2019-06-01 17:39:54,043 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:40:16,139 INFO] Step 81000/100000; acc:  78.31; ppl:  2.70; xent: 0.99; lr: 0.00002; 7507/7161 tok/s;   4660 sec
+[2019-06-01 17:40:16,150 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:41:00,412 INFO] Validation perplexity: 16.5332
+[2019-06-01 17:41:00,412 INFO] Validation accuracy: 52.5351
+[2019-06-01 17:41:00,413 INFO] Decreasing patience: 2/5
+[2019-06-01 17:41:00,413 INFO] Saving checkpoint models/fr-en.fine-tune_step_81000.pt
+[2019-06-01 17:41:36,933 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:41:38,754 INFO] Step 81100/100000; acc:  78.52; ppl:  2.68; xent: 0.99; lr: 0.00002; 3358/3233 tok/s;   4743 sec
+[2019-06-01 17:42:17,011 INFO] Step 81200/100000; acc:  78.72; ppl:  2.65; xent: 0.98; lr: 0.00002; 7707/7372 tok/s;   4781 sec
+[2019-06-01 17:42:34,874 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:42:55,352 INFO] Step 81300/100000; acc:  78.49; ppl:  2.68; xent: 0.99; lr: 0.00002; 7546/7224 tok/s;   4819 sec
+[2019-06-01 17:43:32,663 INFO] Step 81400/100000; acc:  78.61; ppl:  2.66; xent: 0.98; lr: 0.00002; 7384/7102 tok/s;   4857 sec
+[2019-06-01 17:43:32,805 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:44:11,335 INFO] Step 81500/100000; acc:  78.86; ppl:  2.63; xent: 0.97; lr: 0.00002; 7688/7374 tok/s;   4895 sec
+[2019-06-01 17:44:30,780 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:44:49,564 INFO] Step 81600/100000; acc:  78.66; ppl:  2.66; xent: 0.98; lr: 0.00002; 7552/7200 tok/s;   4934 sec
+[2019-06-01 17:45:27,057 INFO] Step 81700/100000; acc:  78.69; ppl:  2.66; xent: 0.98; lr: 0.00002; 7282/7011 tok/s;   4971 sec
+[2019-06-01 17:45:28,747 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:46:05,795 INFO] Step 81800/100000; acc:  79.07; ppl:  2.62; xent: 0.96; lr: 0.00002; 7791/7487 tok/s;   5010 sec
+[2019-06-01 17:46:26,693 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:46:43,816 INFO] Step 81900/100000; acc:  78.82; ppl:  2.63; xent: 0.97; lr: 0.00002; 7544/7179 tok/s;   5048 sec
+[2019-06-01 17:47:21,370 INFO] Step 82000/100000; acc:  78.95; ppl:  2.63; xent: 0.97; lr: 0.00002; 7329/7053 tok/s;   5086 sec
+[2019-06-01 17:47:21,380 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:48:05,560 INFO] Validation perplexity: 16.7026
+[2019-06-01 17:48:05,560 INFO] Validation accuracy: 52.5231
+[2019-06-01 17:48:05,560 INFO] Decreasing patience: 1/5
+[2019-06-01 17:48:05,560 INFO] Saving checkpoint models/fr-en.fine-tune_step_82000.pt
+[2019-06-01 17:48:09,516 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:48:45,047 INFO] Step 82100/100000; acc:  79.17; ppl:  2.60; xent: 0.96; lr: 0.00002; 3598/3452 tok/s;   5169 sec
+[2019-06-01 17:49:07,596 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:49:23,313 INFO] Step 82200/100000; acc:  78.93; ppl:  2.62; xent: 0.96; lr: 0.00002; 7514/7164 tok/s;   5207 sec
+[2019-06-01 17:50:01,560 INFO] Step 82300/100000; acc:  79.15; ppl:  2.60; xent: 0.96; lr: 0.00002; 7155/6889 tok/s;   5246 sec
+[2019-06-01 17:50:06,572 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:50:41,014 INFO] Step 82400/100000; acc:  79.22; ppl:  2.58; xent: 0.95; lr: 0.00002; 7638/7340 tok/s;   5285 sec
+[2019-06-01 17:51:05,469 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:51:19,888 INFO] Step 82500/100000; acc:  79.10; ppl:  2.60; xent: 0.95; lr: 0.00002; 7361/7032 tok/s;   5324 sec
+[2019-06-01 17:51:58,194 INFO] Step 82600/100000; acc:  79.15; ppl:  2.60; xent: 0.95; lr: 0.00002; 7213/6918 tok/s;   5362 sec
+[2019-06-01 17:52:04,573 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:52:37,570 INFO] Step 82700/100000; acc:  79.53; ppl:  2.55; xent: 0.94; lr: 0.00002; 7605/7296 tok/s;   5402 sec
+[2019-06-01 17:53:03,726 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:53:17,016 INFO] Step 82800/100000; acc:  79.24; ppl:  2.58; xent: 0.95; lr: 0.00002; 7279/6947 tok/s;   5441 sec
+[2019-06-01 17:53:54,767 INFO] Step 82900/100000; acc:  79.33; ppl:  2.57; xent: 0.94; lr: 0.00002; 7407/7112 tok/s;   5479 sec
+[2019-06-01 17:54:02,462 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.train.0.pt, number of examples: 16415
+[2019-06-01 17:54:33,248 INFO] Step 83000/100000; acc:  79.54; ppl:  2.54; xent: 0.93; lr: 0.00002; 7708/7384 tok/s;   5517 sec
+[2019-06-01 17:54:33,258 INFO] Loading dataset from ./data/onmt-vocab/fr-en.fine-tune.valid.0.pt, number of examples: 886
+[2019-06-01 17:55:17,477 INFO] Validation perplexity: 16.8551
+[2019-06-01 17:55:17,478 INFO] Validation accuracy: 52.4613
+[2019-06-01 17:55:17,478 INFO] Decreasing patience: 0/5
+[2019-06-01 17:55:17,478 INFO] Training finished after not improving. Early Stop!
+[2019-06-01 17:55:17,478 INFO] Best model found at step 78000
+[2019-06-01 17:55:17,479 INFO] Saving checkpoint models/fr-en.fine-tune_step_83000.pt

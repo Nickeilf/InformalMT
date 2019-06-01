@@ -3,7 +3,7 @@ source path.config
 
 # evaluating
 # you might have to change the best checkpoint
-CHECKPOINT=65000
+CHECKPOINT=78000
 # evaluation on MTNT
 python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
                                 -src ${DATA_DIR}/test.bpe.16k.fr \
