@@ -32,8 +32,8 @@ tar -xvzf MTNT2019.tar.gz
 cut -f3 MTNT2019/en-fr.final.tsv > data/fine-tune/test/MTNT2019.en-fr.en
 cut -f4 MTNT2019/en-fr.final.tsv > data/fine-tune/test/MTNT2019.en-fr.fr
 # fr -> en
-cut -f3 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.en
-cut -f4 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.fr
+cut -f4 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.en
+cut -f3 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.fr
 rm -rf MTNT2019
 rm MTNT2019.tar.gz
 

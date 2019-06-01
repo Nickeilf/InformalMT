@@ -26,8 +26,11 @@ else
   perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/test/newsdiscusstest2015.fr > ${VOCAB_DIR}/test.tok.newsdiscuss2015.fr
   perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/test.fr-en.en > ${VOCAB_DIR}/test.tok.en
   perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/test.fr-en.fr > ${VOCAB_DIR}/test.tok.fr
+  perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.fr-en.en > ${VOCAB_DIR}/test.tok.MTNT2019.en
+  perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.fr-en.fr > ${VOCAB_DIR}/test.tok.MTNT2019.fr
   echo "--------finish tokenization----------"
 fi
+
 
 
 # skip if BPE is done
@@ -45,6 +48,7 @@ else
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.en -c ${DATA_DIR}/fr-en.en.bpe.16k -o ${DATA_DIR}/test.bpe.16k.en
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/test.tok.news2014.en > ${DATA_DIR}/test.bpe.16k.news2014.en
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/test.tok.newsdiscuss2015.en > ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.en
+  python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.MTNT2019.en -c ${DATA_DIR}/fr-en.en.bpe.16k -o ${DATA_DIR}/test.bpe.16k.MTNT2019.en
 
 
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/train.tok.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/train.bpe.16k.fr
@@ -52,6 +56,7 @@ else
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/test.bpe.16k.fr
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/test.tok.news2014.fr > ${DATA_DIR}/test.bpe.16k.news2014.fr
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/test.tok.newsdiscuss2015.fr > ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.fr
+  python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.MTNT2019.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/test.bpe.16k.MTNT2019.fr
   echo "--------finish applying byte pair encoding----------"
 fi
 
@@ -71,32 +76,32 @@ fi
 #                                  -seed 1234
 
 # training
-python ${ONMT_DIR}/train.py -word_vec_size 512 \
-                            -encoder_type brnn \
-                            -decoder_type rnn \
-                            -rnn_size 1024 \
-                            -layers 2 \
-                            -bridge \
-                            -global_attention mlp \
-                            -data ${DATA_DIR}/onmt-vocab/${NAME} \
-                            -save_model models/${NAME} \
-                            -save_checkpoint_steps 5000 \
-                            -batch_size 4000 \
-                            -batch_type tokens \
-                            -valid_steps 5000 \
-                            -train_steps 150000 \
-                            -early_stopping 5 \
-                            -keep_checkpoint 10 \
-                            -optim adam \
-                            -dropout 0.3 \
-                            -label_smoothing 0.1 \
-                            -learning_rate 0.001 \
-                            -decay_steps 10000 \
-                            -start_decay_steps 30000 \
-                            -report_every 500 \
-                            -log_file train_log.log \
-                            -tensorboard \
-                            -tensorboard_log_dir models \
-                            -seed 1234 \
-                            -world_size 1 \
-                            -gpu_ranks 0
+# python ${ONMT_DIR}/train.py -word_vec_size 512 \
+#                             -encoder_type brnn \
+#                             -decoder_type rnn \
+#                             -rnn_size 1024 \
+#                             -layers 2 \
+#                             -bridge \
+#                             -global_attention mlp \
+#                             -data ${DATA_DIR}/onmt-vocab/${NAME} \
+#                             -save_model models/${NAME} \
+#                             -save_checkpoint_steps 5000 \
+#                             -batch_size 4000 \
+#                             -batch_type tokens \
+#                             -valid_steps 5000 \
+#                             -train_steps 150000 \
+#                             -early_stopping 5 \
+#                             -keep_checkpoint 10 \
+#                             -optim adam \
+#                             -dropout 0.3 \
+#                             -label_smoothing 0.1 \
+#                             -learning_rate 0.001 \
+#                             -decay_steps 10000 \
+#                             -start_decay_steps 30000 \
+#                             -report_every 500 \
+#                             -log_file train_log.log \
+#                             -tensorboard \
+#                             -tensorboard_log_dir models \
+#                             -seed 1234 \
+#                             -world_size 1 \
+#                             -gpu_ranks 0
