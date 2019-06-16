@@ -61,47 +61,40 @@ else
 fi
 
 # building vocabulary
-# mkdir ${DATA_DIR}/onmt-vocab
-# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
-# onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
-# python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-#                                  -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-#                                  -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
-#                                  -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-#                                  -src_vocab ${DATA_DIR}/train.vocab.fr \
-#                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
-#                                  -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
-#                                  -src_seq_length 70 \
-#                                  -tgt_seq_length 70 \
-#                                  -seed 1234
+# mkdir ${DATA_DIR}/sockeye
+# python -m sockeye.prepare_data -s ${DATA_DIR}/train.bpe.16k.fr \
+# 					 		   -t ${DATA_DIR}/train.bpe.16k.en \
+# 					 		   --num-words 16000:16000 \
+#  			  				   --max-seq-len 70:70 \
+#    							   --num-samples-per-shard 1000000 \
+#    							   --seed 13 \
+#    					 		   -o data/sockeye
+
 
 # training
-# python ${ONMT_DIR}/train.py -word_vec_size 512 \
-#                             -encoder_type brnn \
-#                             -decoder_type rnn \
-#                             -rnn_size 1024 \
-#                             -layers 2 \
-#                             -bridge \
-#                             -global_attention mlp \
-#                             -data ${DATA_DIR}/onmt-vocab/${NAME} \
-#                             -save_model models/${NAME} \
-#                             -save_checkpoint_steps 5000 \
-#                             -batch_size 4000 \
-#                             -batch_type tokens \
-#                             -valid_steps 5000 \
-#                             -train_steps 150000 \
-#                             -early_stopping 5 \
-#                             -keep_checkpoint 10 \
-#                             -optim adam \
-#                             -dropout 0.3 \
-#                             -label_smoothing 0.1 \
-#                             -learning_rate 0.001 \
-#                             -decay_steps 10000 \
-#                             -start_decay_steps 30000 \
-#                             -report_every 500 \
-#                             -log_file train_log.log \
-#                             -tensorboard \
-#                             -tensorboard_log_dir models \
-#                             -seed 1234 \
-#                             -world_size 1 \
-#                             -gpu_ranks 0
+python -m sockeye.train -d data/sockeye \
+                        -vs ${DATA_DIR}/valid.bpe.16k.fr \
+                        -vt ${DATA_DIR}/valid.bpe.16k.en \
+                        -o models \
+                        --encoder rnn \
+                        --decoder rnn \
+                        --rnn-cell-type lnlstm \
+                        --num-layers 2:2 \
+                        --rnn-num-hidden 512 \
+                        --rnn-decoder-hidden-dropout 0.3 \
+                        --num-embed 512 \
+                        --rnn-attention-type mlp \
+                        --batch-size 4096 \
+                        --batch-type word \
+                        --label-smoothing 0.1 \
+                        --metrics perplexity accuracy \
+                        --checkpoint-interval 5000 \
+                        --max-num-checkpoint-not-improved 8 \
+                        --max-num-epochs 20 \
+                        --optimizer adam \
+                        --initial-learning-rate 0.0005 \
+                        --learning-rate-reduce-factor 0.7 \
+                        --learning-rate-reduce-num-not-improved 2 \
+                        --decode-and-evaluate 0 \
+                        --seed 13 \
+                        --keep-last-params 9

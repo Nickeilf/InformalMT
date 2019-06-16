@@ -1,6 +1,13 @@
 # InformalMT
 Comparison on approaches to Neural Machine Translation on informal languages
 
+### Tools used
+```
+OpenNMT-py
+PyTorch
+fairseq
+```
+
 ### Data Preparation
 You may run this script and it will download data needed automatically.
 
