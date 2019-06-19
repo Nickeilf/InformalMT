@@ -61,39 +61,26 @@ else
 fi
 
 # building vocabulary
-#fairseq-preprocess -s fr -t en \
-#		   --trainpref ${DATA_DIR}/train.bpe.16k \
-#		   --validpref ${DATA_DIR}/valid.bpe.16k \
-#		   --thresholdtgt 0 --thresholdsrc 0 \
-#		   --destdir ${DATA_DIR}/fairseq \
-#		   --log-format json \
-#		   --joined-dictionary \
-#		   --seed 13 \
-#		   --workers 8
+python -m sockeye.prepare_data -s ${DATA_DIR}/train.bpe.16k.fr \
+					 		   -t ${DATA_DIR}/train.bpe.16k.en \
+ 			  				   --max-seq-len 70:70 \
+							   --shared-vocab \
+   							   --num-samples-per-shard 1000000 \
+   							   --seed 13 \
+   					 		   -o data/sockeye
 
 CUDA_VISIBLE_DEVICES=2
 # training
-fairseq-train ${DATA_DIR}/fairseq \
-	      --arch transformer \
-  	      --share-all-embeddings \
-	      --optimizer adam \
-	      --adam-betas '(0.9, 0.98)' \
-	      --clip-norm 0.0 \
-	      --lr-scheduler inverse_sqrt \
-	      --warmup-init-lr 1e-07 \
-	      --warmup-updates 4000 \
-	      --lr 0.001 \
-	      --dropout 0.3 \
-	      --min-lr 1e-09 \
-	      --dropout 0.1 \
-	      --weight-decay 0.0001 \
-	      --criterion label_smoothed_cross_entropy \
-	      --label-smoothing 0.1 \
-	      --max-tokens 4096 \
-	      --update-freq 1 \
-	      --log-interval 50 \
-	      --log-format simple \
-	      --save-dir models \
-	      --no-progress-bar \
-	      --tensorboard-logdir tensorboard \
-	      --seed 13 > train.log
+python -m sockeye.train -d data/sockeye \
+						-vs ${DATA_DIR}/valid.bpe.16k.fr \
+						-vt ${DATA_DIR}/valid.bpr.16k.en \
+						--num-embed 512 \
+						--encoder transformer --decoder transformer \
+						--num-layers 6 --layer-normalization \
+						--transformer-model-size 512 --transformer-feed-forward-num-hidden 2048 \
+						--transformer-dropout-prepost 0.1 \
+						--weight-tying-type src_trg_softmax --weight-tying \
+						--clip-gradient -1 --initial-learning-rate 0.0003 --learning-rate-warmup 50000 --normalize-loss \
+						--loss smoothed-cross-entropy \
+						-o models
+						
