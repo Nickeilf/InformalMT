@@ -9,6 +9,18 @@ mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
 
+# cp -r ../base-fr-en+/data ./
+# cp -r ../base-fr-en+/models ./
+
+# perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
+# perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
+# perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
+# perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
+
+# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
+# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
+# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
+# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -61,25 +73,29 @@ else
 fi
 
 # building vocabulary
-# mkdir ${DATA_DIR}/sockeye
-# python -m sockeye.prepare_data -s ${DATA_DIR}/train.bpe.16k.fr \
-# 					 		   -t ${DATA_DIR}/train.bpe.16k.en \
-# 					 		   --num-words 16000:16000 \
-#  			  				   --max-seq-len 70:70 \
-#    							   --num-samples-per-shard 1000000 \
-#    							   --seed 13 \
-#    					 		   -o data/sockeye
+mkdir ${DATA_DIR}/sockeye
+python -m sockeye.prepare_data -s ${DATA_DIR}/train.finetune.bpe.16k.fr \
+   					 		   -t ${DATA_DIR}/train.finetune.bpe.16k.en \
+   					 		   --num-words 16000:16000 \
+ 			  				   --max-seq-len 70:70 \
+  							   --num-samples-per-shard 1000000 \
+  							   --seed 13 \
+							   --source-vocab data/sockeye/vocab.src.0.json \
+							   --target-vocab data/sockeye/vocab.trg.0.json \
+  					 		   -o data/sockeye-tune
 
 
 # training
-python -m sockeye.train -d data/sockeye \
-                        -vs ${DATA_DIR}/valid.bpe.16k.fr \
-                        -vt ${DATA_DIR}/valid.bpe.16k.en \
-                        -o models \
+python -m sockeye.train -d data/sockeye-tune \
+                        -vs ${DATA_DIR}/valid.finetune.bpe.16k.fr \
+                        -vt ${DATA_DIR}/valid.finetune.bpe.16k.en \
+                        -o models-tune \
                         --encoder rnn \
                         --decoder rnn \
                         --rnn-cell-type lnlstm \
-                        --num-layers 2:2 \
+						--layer-normalization \
+						--rnn-residual-connections \
+                        --num-layers 4:2 \
                         --rnn-num-hidden 512 \
                         --rnn-decoder-hidden-dropout 0.3 \
                         --num-embed 512 \
@@ -88,13 +104,14 @@ python -m sockeye.train -d data/sockeye \
                         --batch-type word \
                         --label-smoothing 0.1 \
                         --metrics perplexity accuracy \
-                        --checkpoint-interval 5000 \
-                        --max-num-checkpoint-not-improved 8 \
-                        --max-num-epochs 20 \
+                        --checkpoint-interval 500 \
+                        --max-num-checkpoint-not-improved 5 \
+                        --max-num-epochs 50 \
                         --optimizer adam \
-                        --initial-learning-rate 0.001 \
+                        --initial-learning-rate 0.0002 \
                         --learning-rate-reduce-factor 0.5 \
                         --learning-rate-reduce-num-not-improved 2 \
                         --decode-and-evaluate 0 \
                         --seed 13 \
+						--params models/params.best \
                         --keep-last-params 9
