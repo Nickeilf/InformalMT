@@ -61,51 +61,39 @@ else
 fi
 
 # building vocabulary
-mkdir ${DATA_DIR}/sockeye
-python -m sockeye.prepare_data -s ${DATA_DIR}/train.bpe.16k.fr \
-					 		   -t ${DATA_DIR}/train.bpe.16k.en \
-					 		   --num-words 16000:16000 \
- 			  				   --max-seq-len 70:70 \
-							   --shared-vocab \
-   							   --num-samples-per-shard 1000000 \
-   							   --seed 13 \
-   					 		   -o data/sockeye
+#fairseq-preprocess -s fr -t en \
+#		   --trainpref ${DATA_DIR}/train.bpe.16k \
+#		   --validpref ${DATA_DIR}/valid.bpe.16k \
+#		   --thresholdtgt 0 --thresholdsrc 0 \
+#		   --destdir ${DATA_DIR}/fairseq \
+#		   --log-format json \
+#		   --joined-dictionary \
+#		   --seed 13 \
+#		   --workers 8
 
-
+CUDA_VISIBLE_DEVICES=2
 # training
-python -m sockeye.train -d data/sockeye \
-                        -vs ${DATA_DIR}/valid.bpe.16k.fr \
-                        -vt ${DATA_DIR}/valid.bpe.16k.en \
-                        -o models \
-                        --encoder transformer \
-                        --decoder transformer \
-                        --num-layers 6:6 \
-						--transformer-model-size 512 \
-						--transformer-attention-heads 8:8 \
-						--transformer-feed-forward-num-hidden 2048:2048 \
-						--transformer-positional-embedding-type fixed \
-						--transformer-dropout-attention 0.1 \
-						--transformer-dropout-act 0.1 \
-						--transformer-dropout-prepost 0.1 \
-                        --num-embed 512:512 \
-                        --weight-tying \
-						--weight-tying-type src_trg_softmax \
-						--weight-init xavier \
-						--weight-init-scale 3.0 \
-						--weight-init-xavier-factor-type avg \
-                        --batch-size 4096 \
-                        --batch-type word \
-                        --label-smoothing 0.1 \
-                        --metrics perplexity accuracy \
-                        --checkpoint-interval 2000 \
-                        --max-num-checkpoint-not-improved 32 \
-                        --optimizer adam \
-                        --initial-learning-rate 0.0002 \
-                        --learning-rate-reduce-factor 0.9 \
-                        --learning-rate-reduce-num-not-improved 2 \
-						--learning-rate-decay-optimizer-states-reset best \
-						--learning-rate-decay-param-reset \
-						--gradient-clipping-threshold -1 \
-                        --decode-and-evaluate 0 \
-                        --seed 13 \
-                        --keep-last-params 60
+fairseq-train ${DATA_DIR}/fairseq \
+	      --arch transformer \
+  	      --share-all-embeddings \
+	      --optimizer adam \
+	      --adam-betas '(0.9, 0.98)' \
+	      --clip-norm 0.0 \
+	      --lr-scheduler inverse_sqrt \
+	      --warmup-init-lr 1e-07 \
+	      --warmup-updates 4000 \
+	      --lr 0.001 \
+	      --dropout 0.3 \
+	      --min-lr 1e-09 \
+	      --dropout 0.1 \
+	      --weight-decay 0.0001 \
+	      --criterion label_smoothed_cross_entropy \
+	      --label-smoothing 0.1 \
+	      --max-tokens 4096 \
+	      --update-freq 1 \
+	      --log-interval 50 \
+	      --log-format simple \
+	      --save-dir models \
+	      --no-progress-bar \
+	      --tensorboard-logdir tensorboard \
+	      --seed 13 > train.log
