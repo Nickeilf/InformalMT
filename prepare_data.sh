@@ -42,4 +42,9 @@ rm MTNT2019.tar.gz
 # we use OpenNMT-py for training so you have to clone the repository
 # uncomment the following lines if you it is not installed
 
+cd runs
+git clone https://github.com/OpenNMT/OpenNMT-py.git
+cd OpenNMT-py
+pip install -r requirements.txt
+cd ../..
 
