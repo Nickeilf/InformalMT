@@ -59,18 +59,20 @@ else
 fi
 
 # building vocabulary
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-                                 --src_words_min_frequency 1 \
-								 --tgt_words_min_frequency 1 \
-                                 -save_data ${DATA_DIR}/onmt/${NAME} \
-                                 -src_seq_length 70 \
-                                 -tgt_seq_length 70 \
-                                 -seed 1234
+#mkdir ${DATA_DIR}/onmt
+#python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+#                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+#                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+ #                                -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+  #                               --src_words_min_frequency 1 \
+#								 --tgt_words_min_frequency 1 \
+ #                                -save_data ${DATA_DIR}/onmt/${NAME} \
+  #                               -src_seq_length 70 \
+   #                              -tgt_seq_length 70 \
+    #                             -seed 1234
 
 # training
+CUDA_VISIBLE_DEVICES=0
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -encoder_type brnn \
                             -decoder_type rnn \
@@ -94,11 +96,10 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
 							-learning_rate_decay 0.7 \
                             -decay_steps 15000 \
                             -start_decay_steps 30000 \
-                            -report_every 500 \
                             -log_file ${NAME}.log \
                             -tensorboard \
                             -tensorboard_log_dir models \
                             -seed 1234 \
-							-exp ${NAME}
-                            -world_size 1 \
-                            -gpu_ranks 0
+							-exp ${NAME} \
+			    -world_size 1 \
+			    -gpu_ranks 0
