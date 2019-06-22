@@ -59,17 +59,21 @@ else
 fi
 
 # building vocabulary
-#mkdir ${DATA_DIR}/onmt
-#python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-#                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-#                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
- #                                -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-  #                               --src_words_min_frequency 1 \
-#								 --tgt_words_min_frequency 1 \
- #                                -save_data ${DATA_DIR}/onmt/${NAME} \
-  #                               -src_seq_length 70 \
-   #                              -tgt_seq_length 70 \
-    #                             -seed 1234
+mkdir ${DATA_DIR}/onmt
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+				 -src_vocab ${DATA_DIR}/train.vocab.fr \
+                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
+                                 --src_words_min_frequency 1 \
+				 --tgt_words_min_frequency 1 \
+                                 -save_data ${DATA_DIR}/onmt/${NAME} \
+                                 -src_seq_length 70 \
+                                 -tgt_seq_length 70 \
+                                 -seed 1234
 
 # training
 CUDA_VISIBLE_DEVICES=0,1
