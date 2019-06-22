@@ -72,7 +72,7 @@ fi
     #                             -seed 1234
 
 # training
-CUDA_VISIBLE_DEVICES=0
+CUDA_VISIBLE_DEVICES=0,1
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -encoder_type brnn \
                             -decoder_type rnn \
@@ -88,7 +88,7 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -valid_steps 5000 \
                             -train_steps 300000 \
                             -early_stopping 5 \
-                            -keep_checkpoint 6 \
+                            -keep_checkpoint 8 \
                             -optim adam \
                             -dropout 0.3 \
                             -label_smoothing 0.1 \
