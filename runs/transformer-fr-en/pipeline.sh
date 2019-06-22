@@ -66,44 +66,55 @@ python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
                                  -train_tgt ${DATA_DIR}/train.bpe.16k.en \
                                  -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
                                  -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-				 				 -src_vocab ${DATA_DIR}/train.vocab.fr \
+								 -src_vocab ${DATA_DIR}/train.vocab.fr \
                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
                                  --src_words_min_frequency 1 \
-				 				 --tgt_words_min_frequency 1 \
+								 --tgt_words_min_frequency 1 \
                                  -save_data ${DATA_DIR}/onmt/${NAME} \
                                  -src_seq_length 70 \
                                  -tgt_seq_length 70 \
+								 -share_vocab \
                                  -seed 1234
 
 # training
-CUDA_VISIBLE_DEVICES=0,1
+# add shared vocab
+CUDA_VISIBLE_DEVICES=1
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
-                            -encoder_type brnn \
-                            -decoder_type rnn \
-                            -rnn_size 1024 \
-                            -layers 2 \
-                            -bridge \
-                            -global_attention mlp \
+                            -encoder_type transformer \
+                            -decoder_type transformer \
+                            -share_embeddings \
+                            -layers 6 \
+							-transformer_ff 2048 \
+							-rnn_size 512 \
+							-accum_count 8 \
+							-heads 8 \
                             -data ${DATA_DIR}/onmt/${NAME} \
                             -save_model models/${NAME} \
-                            -save_checkpoint_steps 5000 \
+                            -save_checkpoint_steps 2000 \
                             -batch_size 4096 \
                             -batch_type tokens \
-                            -valid_steps 5000 \
+                            -valid_steps 2000 \
                             -train_steps 300000 \
                             -early_stopping 5 \
                             -keep_checkpoint 8 \
+							-max_generator_batches 2 \
+							-param_init 0.0 \
+							-param_init_glorot \
+							-position_encoding \
                             -optim adam \
-                            -dropout 0.3 \
+							-adam_beta1 0.9 \
+							-adam_beta2 0.998 \
+                            -dropout 0.1 \
                             -label_smoothing 0.1 \
-                            -learning_rate 0.001 \
-							-learning_rate_decay 0.7 \
-                            -decay_steps 15000 \
-                            -start_decay_steps 30000 \
+                            -learning_rate 2.0 \
+							-decay_method noam \
+							-max_grad_norm 0.0 \
+							-warmup_steps 10000 \
                             -log_file ${NAME}.log \
+							-report_every 50 \
                             -tensorboard \
                             -tensorboard_log_dir models \
                             -seed 1234 \
 							-exp ${NAME} \
-			    -world_size 1 \
-			    -gpu_ranks 0
+			    			-world_size 1 \
+			    			-gpu_ranks 0
