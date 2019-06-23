@@ -8,19 +8,23 @@ source path.config
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
+mkdir models
 
-# cp -r ../base-fr-en+/data ./
-# cp -r ../base-fr-en+/models ./
+STEP=170000
+CUDA_VISIBLE_DEVICES=2
 
-# perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
-# perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
-# perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
-# perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
+#cp -r ../base-fr-en/data ./
+#cp -r ../base-fr-en/models/base-fr-en_step_${STEP}.pt ./models
 
-# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
-# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
-# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
-# python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
+
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -73,45 +77,46 @@ else
 fi
 
 # building vocabulary
-mkdir ${DATA_DIR}/sockeye
-python -m sockeye.prepare_data -s ${DATA_DIR}/train.finetune.bpe.16k.fr \
-   					 		   -t ${DATA_DIR}/train.finetune.bpe.16k.en \
-   					 		   --num-words 16000:16000 \
- 			  				   --max-seq-len 70:70 \
-  							   --num-samples-per-shard 1000000 \
-  							   --seed 13 \
-							   --source-vocab data/sockeye/vocab.src.0.json \
-							   --target-vocab data/sockeye/vocab.trg.0.json \
-  					 		   -o data/sockeye-tune
-
+#python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.fr \
+#                                 -train_tgt ${DATA_DIR}/train.finetune.bpe.16k.en \
+#                                 -valid_src ${DATA_DIR}/valid.finetune.bpe.16k.fr \
+#                                 -valid_tgt ${DATA_DIR}/valid.finetune.bpe.16k.en \
+#                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
+#				 -tgt_vocab ${DATA_DIR}/train.vocab.en \
+#				 -save_data ${DATA_DIR}/onmt/${NAME} \
+#                                 -src_seq_length 70 \
+#                                 -tgt_seq_length 70 \
+#                                 -seed 1234
 
 # training
-python -m sockeye.train -d data/sockeye-tune \
-                        -vs ${DATA_DIR}/valid.finetune.bpe.16k.fr \
-                        -vt ${DATA_DIR}/valid.finetune.bpe.16k.en \
-                        -o models-tune \
-                        --encoder rnn \
-                        --decoder rnn \
-                        --rnn-cell-type lnlstm \
-						--layer-normalization \
-						--rnn-residual-connections \
-                        --num-layers 4:2 \
-                        --rnn-num-hidden 512 \
-                        --rnn-decoder-hidden-dropout 0.3 \
-                        --num-embed 512 \
-                        --rnn-attention-type mlp \
-                        --batch-size 4096 \
-                        --batch-type word \
-                        --label-smoothing 0.1 \
-                        --metrics perplexity accuracy \
-                        --checkpoint-interval 500 \
-                        --max-num-checkpoint-not-improved 5 \
-                        --max-num-epochs 50 \
-                        --optimizer adam \
-                        --initial-learning-rate 0.0002 \
-                        --learning-rate-reduce-factor 0.5 \
-                        --learning-rate-reduce-num-not-improved 2 \
-                        --decode-and-evaluate 0 \
-                        --seed 13 \
-						--params models/params.best \
-                        --keep-last-params 9
+python ${ONMT_DIR}/train.py -word_vec_size 512 \
+                            -encoder_type brnn \
+                            -decoder_type rnn \
+                            -rnn_size 1024 \
+                            -layers 2 \
+                            -bridge \
+                            -global_attention mlp \
+                            -data ${DATA_DIR}/onmt/${NAME} \
+                            -save_model models/${NAME} \
+                            -train_from models/base-fr-en_step_${STEP}.pt \
+                            -save_checkpoint_steps 500 \
+                            -batch_size 4096 \
+                            -batch_type tokens \
+                            -valid_steps 500 \
+                            -train_steps 100000 \
+                            -early_stopping 5 \
+                            -keep_checkpoint 8 \
+                            -optim adam \
+                            -dropout 0.3 \
+                            -label_smoothing 0.1 \
+                            -learning_rate 0.0002 \
+			    -learning_rate_decay 0.7 \
+                            -decay_steps 1000 \
+                            -start_decay_steps 10000 \
+                            -log_file ${NAME}.log \
+                            -tensorboard \
+                            -tensorboard_log_dir models \
+                            -seed 1234 \
+			    -exp ${NAME} \
+                            -world_size 1 \
+                            -gpu_ranks 0
