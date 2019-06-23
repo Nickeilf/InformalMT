@@ -8,23 +8,7 @@ source path.config
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
-mkdir models
 
-STEP=170000
-CUDA_VISIBLE_DEVICES=2
-
-#cp -r ../base-fr-en/data ./
-#cp -r ../base-fr-en/models/base-fr-en_step_${STEP}.pt ./models
-
-#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
-#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
-#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
-#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
-
-#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
-#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
-#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
-#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -42,11 +26,8 @@ else
   perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/test/newsdiscusstest2015.fr > ${VOCAB_DIR}/test.tok.newsdiscuss2015.fr
   perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/test.fr-en.en > ${VOCAB_DIR}/test.tok.en
   perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/test.fr-en.fr > ${VOCAB_DIR}/test.tok.fr
-  perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.fr-en.en > ${VOCAB_DIR}/test.tok.MTNT2019.en
-  perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.fr-en.fr > ${VOCAB_DIR}/test.tok.MTNT2019.fr
   echo "--------finish tokenization----------"
 fi
-
 
 
 # skip if BPE is done
@@ -64,7 +45,6 @@ else
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.en -c ${DATA_DIR}/fr-en.en.bpe.16k -o ${DATA_DIR}/test.bpe.16k.en
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/test.tok.news2014.en > ${DATA_DIR}/test.bpe.16k.news2014.en
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/test.tok.newsdiscuss2015.en > ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.en
-  python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.MTNT2019.en -c ${DATA_DIR}/fr-en.en.bpe.16k -o ${DATA_DIR}/test.bpe.16k.MTNT2019.en
 
 
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/train.tok.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/train.bpe.16k.fr
@@ -72,23 +52,23 @@ else
   python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/test.bpe.16k.fr
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/test.tok.news2014.fr > ${DATA_DIR}/test.bpe.16k.news2014.fr
   python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/test.tok.newsdiscuss2015.fr > ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.fr
-  python ${TOOL_DIR}/apply_bpe.py -i ${VOCAB_DIR}/test.tok.MTNT2019.fr -c ${DATA_DIR}/fr-en.fr.bpe.16k -o ${DATA_DIR}/test.bpe.16k.MTNT2019.fr
   echo "--------finish applying byte pair encoding----------"
 fi
 
 # building vocabulary
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.finetune.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.finetune.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.finetune.bpe.16k.en \
-                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
-                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
-                                 -save_data ${DATA_DIR}/onmt/${NAME} \
-								 --src_words_min_frequency 1 \
-				 				 --tgt_words_min_frequency 1 \
-                                 -src_seq_length 70 \
-                                 -tgt_seq_length 70 \
-                                 -seed 1234
+mkdir ${DATA_DIR}/onmt-vocab
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+                                  -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+                                  -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+                                  -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+                                  -src_vocab ${DATA_DIR}/train.vocab.fr \
+                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
+                                  -save_data ${DATA_DIR}/onmt-vocab/${NAME} \
+                                  -src_seq_length 70 \
+                                  -tgt_seq_length 70 \
+                                  -seed 1234
 
 # training
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
@@ -98,28 +78,25 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -layers 2 \
                             -bridge \
                             -global_attention mlp \
-                            -data ${DATA_DIR}/onmt/${NAME} \
+                            -data ${DATA_DIR}/onmt-vocab/${NAME} \
                             -save_model models/${NAME} \
-                            -train_from models/base-fr-en_step_${STEP}.pt \
-                            -save_checkpoint_steps 1000 \
+                            -save_checkpoint_steps 5000 \
                             -batch_size 4096 \
                             -batch_type tokens \
-                            -valid_steps 1000 \
-                            -train_steps 100000 \
+                            -valid_steps 5000 \
+                            -train_steps 150000 \
                             -early_stopping 5 \
-                            -keep_checkpoint 8 \
+                            -keep_checkpoint 10 \
                             -optim adam \
                             -dropout 0.3 \
-							-log_file_level 50 \
                             -label_smoothing 0.1 \
-                            -learning_rate 0.0002 \
-			    -learning_rate_decay 0.7 \
-                            -decay_steps 1000 \
-                            -start_decay_steps 10000 \
-                            -log_file ${NAME}.log \
+                            -learning_rate 0.001 \
+                            -decay_steps 15000 \
+                            -start_decay_steps 30000 \
+                            -report_every 100 \
+                            -log_file train_log.log \
                             -tensorboard \
                             -tensorboard_log_dir models \
                             -seed 1234 \
-			    -exp ${NAME} \
                             -world_size 1 \
                             -gpu_ranks 0
