@@ -11,7 +11,6 @@ mkdir result
 mkdir models
 
 STEP=170000
-CUDA_VISIBLE_DEVICES=2
 
 #cp -r ../base-fr-en/data ./
 #cp -r ../base-fr-en/models/base-fr-en_step_${STEP}.pt ./models
@@ -77,18 +76,18 @@ else
 fi
 
 # building vocabulary
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.finetune.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.finetune.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.finetune.bpe.16k.en \
-                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
-                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
-                                 -save_data ${DATA_DIR}/onmt/${NAME} \
-								 --src_words_min_frequency 1 \
-				 				 --tgt_words_min_frequency 1 \
-                                 -src_seq_length 70 \
-                                 -tgt_seq_length 70 \
-                                 -seed 1234
+#python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.fr \
+#                                 -train_tgt ${DATA_DIR}/train.finetune.bpe.16k.en \
+#                                 -valid_src ${DATA_DIR}/valid.finetune.bpe.16k.fr \
+#                                 -valid_tgt ${DATA_DIR}/valid.finetune.bpe.16k.en \
+#                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
+#                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
+#                                 -save_data ${DATA_DIR}/onmt/${NAME} \
+#								 --src_words_min_frequency 1 \
+#				 				 --tgt_words_min_frequency 1 \
+#                                 -src_seq_length 70 \
+#                                 -tgt_seq_length 70 \
+#                                 -seed 1234
 
 # training
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
@@ -105,21 +104,21 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -batch_size 4096 \
                             -batch_type tokens \
                             -valid_steps 1000 \
-                            -train_steps 100000 \
+							-valid_batch_size 10 \
+                            -train_steps 300000 \
                             -early_stopping 5 \
                             -keep_checkpoint 8 \
                             -optim adam \
                             -dropout 0.3 \
-							-log_file_level 50 \
                             -label_smoothing 0.1 \
                             -learning_rate 0.0002 \
-			    -learning_rate_decay 0.7 \
+			    			-learning_rate_decay 0.9 \
                             -decay_steps 1000 \
-                            -start_decay_steps 10000 \
+                            -start_decay_steps 7000 \
                             -log_file ${NAME}.log \
                             -tensorboard \
                             -tensorboard_log_dir models \
                             -seed 1234 \
-			    -exp ${NAME} \
+			    			-exp ${NAME} \
                             -world_size 1 \
                             -gpu_ranks 0
