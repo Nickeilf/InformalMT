@@ -103,11 +103,11 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -data ${DATA_DIR}/onmt/${NAME} \
                             -save_model models/${NAME} \
 							-train_from models/transformer-fr-en_step_${STEP}.pt \
-                            -save_checkpoint_steps 1000 \
+                            -save_checkpoint_steps 50 \
                             -batch_size 4096 \
                             -batch_type tokens \
-                            -valid_steps 1000 \
-			    -valid_batch_size 5 \
+                            -valid_steps 50 \
+			    			-valid_batch_size 5 \
                             -train_steps 300000 \
                             -early_stopping 8 \
                             -keep_checkpoint 10 \

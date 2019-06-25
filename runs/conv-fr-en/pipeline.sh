@@ -59,54 +59,16 @@ else
 fi
 
 # building vocabulary
-mkdir ${DATA_DIR}/onmt
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
-onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
-								 -src_vocab ${DATA_DIR}/train.vocab.fr \
-                                 -tgt_vocab ${DATA_DIR}/train.vocab.en \
-                                 --src_words_min_frequency 1 \
-								 --tgt_words_min_frequency 1 \
-                                 -save_data ${DATA_DIR}/onmt/${NAME} \
-                                 -src_seq_length 70 \
-                                 -tgt_seq_length 70 \
-                                 -seed 1234
+mkdir ${DATA_DIR}/fairseq
+fairseq-preprocess --source-lang fr --target-lang en \
+  --trainpref ${DATA_DIR}/train.bpe.16k --validpref ${DATA_DIR}/train.bpe.16k \
+  --destdir ${DATA_DIR}/fairseq/convs2s.fr-en
 
 # training
 # add shared vocab
 CUDA_VISIBLE_DEVICES=1
-python ${ONMT_DIR}/train.py -word_vec_size 512 \
-                            -encoder_type cnn \
-                            -decoder_type cnn \
-                            -layers 15 \
-							-rnn_size 512 \
-							-cnn_kernel_width 5 \
-                            -data ${DATA_DIR}/onmt/${NAME} \
-                            -save_model models/${NAME} \
-                            -save_checkpoint_steps 5000 \
-                            -batch_size 64 \
-                            -batch_type sents \
-                            -valid_steps 5000 \
-                            -train_steps 300000 \
-                            -early_stopping 5 \
-                            -keep_checkpoint 8 \
-							-position_encoding \
-                            -optim adam \
-							-adam_beta1 0.9 \
-							-adam_beta2 0.998 \
-                            -dropout 0.2 \
-                            -label_smoothing 0.1 \
-                            -learning_rate 0.001 \
-							-max_grad_norm 0.1 \
-							-warmup_steps 4000 \
-                            -log_file ${NAME}.log \
-							-report_every 50 \
-                            -tensorboard \
-                            -tensorboard_log_dir models \
-                            -seed 1234 \
-							-exp ${NAME} \
-			    			-world_size 1 \
-			    			-gpu_ranks 0
+fairseq-train ${DATA_DIR}/fairseq/convs2s.fr-en \
+  --lr 0.25 --clip-norm 0.1 --dropout 0.2 --max-tokens 4096 \
+  --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
+  --lr-scheduler fixed --force-anneal 200 \
+  --arch fconv_iwslt_de_en --save-dir models/convs2s
