@@ -8,22 +8,6 @@ source path.config
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
-mkdir models
-
-STEP=52000
-
-cp -r ../transformer-fr-en/data ./
-cp -r ../transformer-fr-en/models/transformer-fr-en_step_${STEP}.pt ./models
-
-perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
-perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
-perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
-perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
-
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -75,18 +59,54 @@ else
 fi
 
 # building vocabulary
-python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.fr \
-                                 -train_tgt ${DATA_DIR}/train.finetune.bpe.16k.en \
-                                 -valid_src ${DATA_DIR}/valid.finetune.bpe.16k.fr \
-                                 -valid_tgt ${DATA_DIR}/valid.finetune.bpe.16k.en \
-                                 -src_vocab ${DATA_DIR}/train.vocab.fr \
+mkdir ${DATA_DIR}/onmt
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.en ${DATA_DIR}/train.bpe.16k.en
+onmt-build-vocab --save_vocab ${DATA_DIR}/train.vocab.fr ${DATA_DIR}/train.bpe.16k.fr
+python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.bpe.16k.fr \
+                                 -train_tgt ${DATA_DIR}/train.bpe.16k.en \
+                                 -valid_src ${DATA_DIR}/valid.bpe.16k.fr \
+                                 -valid_tgt ${DATA_DIR}/valid.bpe.16k.en \
+								 -src_vocab ${DATA_DIR}/train.vocab.fr \
                                  -tgt_vocab ${DATA_DIR}/train.vocab.en \
+                                 --src_words_min_frequency 1 \
+								 --tgt_words_min_frequency 1 \
                                  -save_data ${DATA_DIR}/onmt/${NAME} \
-								 --src_words_min_frequency 1 \
-				 				 --tgt_words_min_frequency 1 \
                                  -src_seq_length 70 \
                                  -tgt_seq_length 70 \
                                  -seed 1234
 
 # training
-
+# add shared vocab
+CUDA_VISIBLE_DEVICES=1
+python ${ONMT_DIR}/train.py -word_vec_size 512 \
+                            -encoder_type cnn \
+                            -decoder_type cnn \
+                            -layers 15 \
+							-rnn_size 512 \
+							-cnn_kernel_width 5 \
+                            -data ${DATA_DIR}/onmt/${NAME} \
+                            -save_model models/${NAME} \
+                            -save_checkpoint_steps 5000 \
+                            -batch_size 64 \
+                            -batch_type sents \
+                            -valid_steps 5000 \
+                            -train_steps 300000 \
+                            -early_stopping 5 \
+                            -keep_checkpoint 8 \
+							-position_encoding \
+                            -optim adam \
+							-adam_beta1 0.9 \
+							-adam_beta2 0.998 \
+                            -dropout 0.2 \
+                            -label_smoothing 0.1 \
+                            -learning_rate 0.001 \
+							-max_grad_norm 0.1 \
+							-warmup_steps 4000 \
+                            -log_file ${NAME}.log \
+							-report_every 50 \
+                            -tensorboard \
+                            -tensorboard_log_dir models \
+                            -seed 1234 \
+							-exp ${NAME} \
+			    			-world_size 1 \
+			    			-gpu_ranks 0
