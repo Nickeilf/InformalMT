@@ -12,18 +12,18 @@ mkdir models
 
 STEP=52000
 
-cp -r ../transformer-fr-en/data ./
-cp -r ../transformer-fr-en/models/transformer-fr-en_step_${STEP}.pt ./models
+#cp -r ../transformer-fr-en/data ./
+#cp -r ../transformer-fr-en/models/transformer-fr-en_step_${STEP}.pt ./models
 
-perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
-perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
-perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
-perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
 
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
-python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -90,7 +90,7 @@ python ${ONMT_DIR}/preprocess.py -train_src ${DATA_DIR}/train.finetune.bpe.16k.f
 
 # training
 # add shared vocab
-CUDA_VISIBLE_DEVICES=0
+CUDA_VISIBLE_DEVICES=2
 python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -encoder_type transformer \
                             -decoder_type transformer \
@@ -103,13 +103,14 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -data ${DATA_DIR}/onmt/${NAME} \
                             -save_model models/${NAME} \
 							-train_from models/transformer-fr-en_step_${STEP}.pt \
-                            -save_checkpoint_steps 500 \
+                            -save_checkpoint_steps 1000 \
                             -batch_size 4096 \
                             -batch_type tokens \
-                            -valid_steps 500 \
+                            -valid_steps 1000 \
+			    -valid_batch_size 5 \
                             -train_steps 300000 \
-                            -early_stopping 5 \
-                            -keep_checkpoint 8 \
+                            -early_stopping 8 \
+                            -keep_checkpoint 10 \
 							-max_generator_batches 2 \
 							-param_init 0.0 \
 							-param_init_glorot \
@@ -119,8 +120,7 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
 							-adam_beta2 0.998 \
                             -dropout 0.1 \
                             -label_smoothing 0.1 \
-                            -learning_rate 2.0 \
-							-decay_method noam \
+                            -learning_rate 2 \
 							-max_grad_norm 0.0 \
 							-warmup_steps 10000 \
                             -log_file ${NAME}.log \

@@ -1,7 +1,8 @@
 #!/bin/bash
 source path.config
 
-CHECKPOINT=52000
+CUDA_VISIBLE_DEVICES=1
+CHECKPOINT=53000
 # evaluation on MTNT
 python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
                                 -src ${DATA_DIR}/test.bpe.16k.fr \
