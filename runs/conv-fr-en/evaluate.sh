@@ -1,56 +1,31 @@
 #!/bin/bash
 source path.config
 
-CHECKPOINT=52000
+CUDA_VISIBLE_DEVICES=1
 # evaluation on MTNT
-python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
-                                -src ${DATA_DIR}/test.bpe.16k.fr \
-                                -tgt ${DATA_DIR}/test.bpe.16k.en \
-                                -output result/MTNT.pred.txt \
-                                -seed 1234 \
-                                -beam_size 5 \
-                                -gpu 0 \
-								-fp32
-cat result/MTNT.pred.txt | sed -E 's/(@@ )|(@@ ?$)//g' > result/MTNT.join.txt
+cat data/test.bpe.16k.fr | fairseq-interactive data/fairseq --path models/checkpoint_best.pt --beam 5 --remove-bpe --batch-size 30 --buffer-size 50 |tail -n +7| tee result/MTNT.pred.txt
+cut -f3 result/MTNT.pred.txt > result/MTNT.txt
+sed '/^$/d' result/MTNT.txt > result/MTNT.join.txt
 perl ${TOOL_DIR}/detokenizer.perl -l en < result/MTNT.join.txt > result/MTNT.detok.txt
 
 
-# evaluation on newstest2014
-python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
-                                -src ${DATA_DIR}/test.bpe.16k.news2014.fr \
-                                -tgt ${DATA_DIR}/test.bpe.16k.news2014.en \
-                                -output result/news2014.pred.txt \
-                                -seed 1234 \
-                                -beam_size 5 \
-                                -gpu 0 \
-								-fp32
-cat result/news2014.pred.txt | sed -E 's/(@@ )|(@@ ?$)//g' > result/news2014.join.txt
+# evaluation on newstest2014 
+cat data/test.bpe.16k.news2014.fr | fairseq-interactive data/fairseq --path models/checkpoint_best.pt --beam 5 --remove-bpe --batch-size 30 --buffer-size 50 |tail -n +7| tee result/news2014.pred.txt
+cut -f3 result/news2014.pred.txt > result/news2014.txt
+sed '/^$/d' result/news2014.txt > result/news2014.join.txt
 perl ${TOOL_DIR}/detokenizer.perl -l en < result/news2014.join.txt > result/news2014.detok.txt
 
 
 # evaluation on newsdiscusstest2015
-python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
-                                -src ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.fr \
-                                -tgt ${DATA_DIR}/test.bpe.16k.newsdiscuss2015.en \
-                                -output result/newsdiscuss2015.pred.txt \
-                                -seed 1234 \
-                                -beam_size 5 \
-                                -gpu 0 \
-								-fp32
-cat result/newsdiscuss2015.pred.txt | sed -E 's/(@@ )|(@@ ?$)//g' > result/newsdiscuss2015.join.txt
+cat data/test.bpe.16k.newsdiscuss2015.fr | fairseq-interactive data/fairseq --path models/checkpoint_best.pt --beam 5 --remove-bpe --batch-size 30 --buffer-size 50 |tail -n +7| tee result/newsdiscuss2015.pred.txt
+cut -f3 result/newsdiscuss2015.pred.txt > result/newsdiscuss2015.txt
+sed '/^$/d' result/newsdiscuss2015.txt > result/newsdiscuss2015.join.txt
 perl ${TOOL_DIR}/detokenizer.perl -l en < result/newsdiscuss2015.join.txt > result/newsdiscuss2015.detok.txt
 
-
 # evaluation on MTNT2019 test
-python ${ONMT_DIR}/translate.py -model models/${NAME}_step_${CHECKPOINT}.pt \
-                                -src ${DATA_DIR}/test.bpe.16k.MTNT2019.fr \
-                                -tgt ${DATA_DIR}/test.bpe.16k.MTNT2019.en \
-                                -output result/MTNT2019.pred.txt \
-                                -seed 1234 \
-                                -beam_size 5 \
-                                -gpu 0 \
-								-fp32
-cat result/MTNT2019.pred.txt | sed -E 's/(@@ )|(@@ ?$)//g' > result/MTNT2019.join.txt
+cat data/test.bpe.16k.MTNT2019.fr | fairseq-interactive data/fairseq --path models/checkpoint_best.pt --beam 5 --remove-bpe --batch-size 30 --buffer-size 50 |tail -n +7| tee result/MTNT2019.pred.txt
+cut -f3 result/MTNT2019.pred.txt > result/MTNT2019.txt
+sed '/^$/d' result/MTNT2019.txt > result/MTNT2019.join.txt
 perl ${TOOL_DIR}/detokenizer.perl -l en < result/MTNT2019.join.txt > result/MTNT2019.detok.txt
 
 echo "BLEU score on MTNT test set"

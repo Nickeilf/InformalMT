@@ -61,14 +61,14 @@ fi
 # building vocabulary
 mkdir ${DATA_DIR}/fairseq
 fairseq-preprocess --source-lang fr --target-lang en \
-  --trainpref ${DATA_DIR}/train.bpe.16k --validpref ${DATA_DIR}/train.bpe.16k \
-  --destdir ${DATA_DIR}/fairseq/convs2s.fr-en
+  --trainpref ${DATA_DIR}/train.bpe.16k --validpref ${DATA_DIR}/valid.bpe.16k \
+  --thresholdtgt 0 --thresholdsrc 0 --workers 8 --destdir ${DATA_DIR}/fairseq
 
 # training
 # add shared vocab
-CUDA_VISIBLE_DEVICES=1
-fairseq-train ${DATA_DIR}/fairseq/convs2s.fr-en \
-  --lr 0.25 --clip-norm 0.1 --dropout 0.2 --max-tokens 4096 \
+CUDA_VISIBLE_DEVICES=0
+fairseq-train ${DATA_DIR}/fairseq \
+  --lr 0.5 --clip-norm 0.1 --dropout 0.1 --max-tokens 3000 \
   --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
-  --lr-scheduler fixed --force-anneal 200 \
-  --arch fconv_iwslt_de_en --save-dir models/convs2s
+  --lr-scheduler fixed --force-anneal 50 --log-format json --skip-invalid-size-inputs-valid-test \
+  --arch fconv_wmt_en_fr --save-dir models --max-epoch 50 --max-sentences-valid 5 > convs2s.log
