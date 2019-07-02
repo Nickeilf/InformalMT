@@ -58,17 +58,17 @@ else
 fi
 
 # building vocabulary
-mkdir ${DATA_DIR}/sockeye
-python -m sockeye.prepare_data -s ${DATA_DIR}/train.char.fr \
-							   -t ${DATA_DIR}/train.bpe.16k.en \
-							   --max-seq-len 400:70 \
-							   -o ${DATA_DIR}/sockeye
+#mkdir ${DATA_DIR}/sockeye
+#python -m sockeye.prepare_data -s ${DATA_DIR}/train.char.fr \
+#							   -t ${DATA_DIR}/train.bpe.16k.en \
+#							   --max-seq-len 400:70 \
+#							   -o ${DATA_DIR}/sockeye
 							   
 
 
 # training
+CUDA_VISIBLE_DEVICES=1
 # same as char2char( for CNN embedding setting)
-# adding positional encoding
 python -m sockeye.train -d ${DATA_DIR}/sockeye \
 						-o models \
 						-vs ${DATA_DIR}/valid.char.fr \
@@ -76,26 +76,23 @@ python -m sockeye.train -d ${DATA_DIR}/sockeye \
 						--encoder rnn-with-conv-embed \
 						--decoder rnn \
 						--num-layers 2:2 \
-						--num-embed 512 \
 						--rnn-num-hidden 1024 \
 						--conv-embed-output-dim 128 \
-						--conv-embed-add-positional-encodings \
 						--rnn-cell-type lnlstm \
-						--rnn-num-hidden \
 						--rnn-residual-connections \
 						--layer-normalization \
 						--rnn-decoder-hidden-dropout 0.3 \
-						--batch-size 4096 \
-						--batch-type word \
+						--batch-size 40 \
+						--batch-type sentence \
 						--metrics perplexity accuracy \
 						--label-smoothing 0.1 \
-						--max-num-checkpoint-not-improved 8 \
+						--max-num-checkpoint-not-improved 12 \
 						--conv-embed-dropout 0.1 \
 						--optimizer adam \
 						--initial-learning-rate 0.001 \
 						--learning-rate-reduce-factor 0.7 \
 						--checkpoint-interval 5000 \
-						--learning-rate-reduce-num-not-improved 2 \
+						--learning-rate-reduce-num-not-improved 3 \
 						--decode-and-evaluate 0 \
-						--keep-last-params 12
+						--keep-last-params 15
 						
