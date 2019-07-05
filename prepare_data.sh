@@ -41,6 +41,11 @@ cat data/train/*.en > data/train/train.large.en
 cat data/train/*.fr > data/train/train.large.fr
 python shuffle.py -src data/train/train.large.fr -tgt data/train/train.large.en
 
+cat data/fine-tune/train/train.en-fr.en data/fine-tune/train/train.fr-en.en > data/fine-tune/train/train.en
+cat data/fine-tune/train/train.en-fr.fr data/fine-tune/train/train.fr-en.fr > data/fine-tune/train/train.fr
+cat data/fine-tune/valid/valid.en-fr.en data/fine-tune/valid/valid.fr-en.en > data/fine-tune/valid/valid.en
+cat data/fine-tune/valid/valid.en-fr.fr data/fine-tune/valid/valid.fr-en.fr > data/fine-tune/valid/valid.fr
+
 # download MTNT dataset
 wget https://github.com/pmichel31415/mtnt/releases/download/v1.1/MTNT.1.1.tar.gz
 tar -xvzf MTNT.1.1.tar.gz MTNT/train MTNT/valid MTNT/test MTNT/split_tsv.sh
