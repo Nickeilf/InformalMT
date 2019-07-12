@@ -26,6 +26,11 @@ perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.
 perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.fr-en.fr > ${DATA_DIR}/tok/test.fr-en.tok.MTNT2019.fr
 perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.en-fr.en > ${DATA_DIR}/tok/test.en-fr.tok.MTNT2019.en
 perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/test/MTNT2019.en-fr.fr > ${DATA_DIR}/tok/test.en-fr.tok.MTNT2019.fr
+#IWSLT data
+perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/iwslt.fr-en.en.txt > ${DATA_DIR}/tok/finetune.iwslt.fr-en.tok.en
+perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/iwslt.fr-en.fr.txt > ${DATA_DIR}/tok/finetune.iwslt.fr-en.tok.fr
+perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/iwslt.en-fr.en.txt > ${DATA_DIR}/tok/finetune.iwslt.en-fr.tok.en
+perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/iwslt.en-fr.fr.txt > ${DATA_DIR}/tok/finetune.iwslt.en-fr.tok.fr
 echo "--------finish tokenization----------"
 
 
@@ -45,6 +50,8 @@ python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.fr-en.tok.en -c ${DATA_D
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.en-fr.tok.en -c ${DATA_DIR}/bpe/en.bpe.50k -o ${DATA_DIR}/bpe/test.en-fr.bpe.en
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.fr-en.tok.MTNT2019.en -c ${DATA_DIR}/bpe/en.bpe.50k -o ${DATA_DIR}/bpe/test.fr-en.bpe.MTNT2019.en
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.en-fr.tok.MTNT2019.en -c ${DATA_DIR}/bpe/en.bpe.50k -o ${DATA_DIR}/bpe/test.en-fr.bpe.MTNT2019.en
+python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/finetune.iwslt.fr-en.tok.en -c ${DATA_DIR}/bpe/en.bpe.50k -o ${DATA_DIR}/bpe/finetune.iwslt.fr-en.bpe.en
+python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/finetune.iwslt.en-fr.tok.en -c ${DATA_DIR}/bpe/en.bpe.50k -o ${DATA_DIR}/bpe/finetune.iwslt.en-fr.bpe.en
 # apply BPE on all French files
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/train.large.tok.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/train.bpe.fr
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/valid.tok.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/valid.bpe.fr
@@ -56,6 +63,8 @@ python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.fr-en.tok.fr -c ${DATA_D
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.en-fr.tok.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/test.en-fr.bpe.fr
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.fr-en.tok.MTNT2019.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/test.fr-en.bpe.MTNT2019.fr
 python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/test.en-fr.tok.MTNT2019.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/test.en-fr.bpe.MTNT2019.fr
+python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/finetune.iwslt.fr-en.tok.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/finetune.iwslt.fr-en.bpe.fr
+python ${TOOL_DIR}/apply_bpe.py -i ${DATA_DIR}/tok/finetune.iwslt.en-fr.tok.fr -c ${DATA_DIR}/bpe/fr.bpe.50k -o ${DATA_DIR}/bpe/finetune.iwslt.en-fr.bpe.fr
 
 echo "--------finish applying byte pair encoding----------"
 
