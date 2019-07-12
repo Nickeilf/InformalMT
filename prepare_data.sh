@@ -11,19 +11,19 @@ mv news* data/test
 rm clean-data-en-fr.tar.gz
 
 # CommonCrawl
-#wget http://www.statmt.org/wmt13/training-parallel-commoncrawl.tgz
+wget http://www.statmt.org/wmt13/training-parallel-commoncrawl.tgz
 tar -xvzf training-parallel-commoncrawl.tgz commoncrawl.fr-en.fr commoncrawl.fr-en.en
 rm training-parallel-commoncrawl.tgz
 
 # UN corpus
-#wget http://www.statmt.org/wmt13/training-parallel-un.tgz
+wget http://www.statmt.org/wmt13/training-parallel-un.tgz
 tar -xvzf training-parallel-un.tgz un/undoc.2000.fr-en.fr un/undoc.2000.fr-en.en
 mv un/* ./
 rmdir un
 rm training-parallel-un.tgz
 
 # giga-fr-en
-#wget http://www.statmt.org/wmt10/training-giga-fren.tar
+wget http://www.statmt.org/wmt10/training-giga-fren.tar
 tar xvf training-giga-fren.tar
 rm training-giga-fren.tar
 gzip -d giga-fren.release2.fixed.en.gz
@@ -73,7 +73,62 @@ cut -f3 MTNT2019/fr-en.final.tsv > data/fine-tune/test/MTNT2019.fr-en.fr
 rm -rf MTNT2019
 rm MTNT2019.tar.gz
 
+# download IWSLT2017 data for tuning (fr-en and en-fr)
+wget wit3.fbk.eu/archive/2017-01-trnted//texts/fr/en/fr-en.tgz
+tar -xvzf fr-en.tgz
+cd fr-en
 
+# training data
+for train in train.tags.fr-en.fr train.tags.fr-en.en; do
+	cat $train | \
+	grep -v '<url>' | \
+	grep -v '<talkid>' | \
+	grep -v '<keywords>' | \
+	grep -v '<doc' | \
+	grep -v '<speaker>' | \
+	grep -v '<reviewer' | \
+	grep -v '<translator' | \
+	grep -v '<\/doc>' | \
+	sed -e 's/<title>//g' | \
+	sed -e 's/<\/title>//g' | \
+	sed -e 's/<description>//g' | \
+	sed -e 's/<\/description>//g' > $train.txt
+done
+
+
+cat *.en.txt > ../data/fine-tune/train/iwslt.fr-en.en.txt
+cat *.fr.txt > ../data/fine-tune/train/iwslt.fr-en.fr.txt
+cd ..
+rm -rf fr-en
+rm fr-en.tgz
+
+
+wget wit3.fbk.eu/archive/2017-01-trnted//texts/en/fr/en-fr.tgz
+tar -xvzf en-fr.tgz
+# train
+cd en-fr
+for train in train.tags.en-fr.fr train.tags.en-fr.en; do
+	cat $train | \
+	grep -v '<url>' | \
+	grep -v '<talkid>' | \
+	grep -v '<keywords>' | \
+	grep -v '<doc' | \
+	grep -v '<speaker>' | \
+	grep -v '<reviewer' | \
+	grep -v '<translator' | \
+	grep -v '<\/doc>' | \
+	sed -e 's/<title>//g' | \
+	sed -e 's/<\/title>//g' | \
+	sed -e 's/<description>//g' | \
+	sed -e 's/<\/description>//g' > $train.txt
+done
+
+
+cat *.en.txt > ../data/fine-tune/train/iwslt.en-fr.en.txt
+cat *.fr.txt > ../data/fine-tune/train/iwslt.en-fr.fr.txt
+cd ..
+rm -rf en-fr
+rm en-fr.tgz
 
 # we use OpenNMT-py for training so you have to clone the repository
 # uncomment the following lines if you it is not installed
