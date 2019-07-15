@@ -1,5 +1,5 @@
 mkdir -p data/train data/valid data/test data/monolingual
-mkdir -p data/fine-tune/train data/fine-tune/valid data/fine-tune/test
+mkdir -p data/fine-tune/train data/fine-tune/valid data/fine-tune/test data/fine-tune/monolingual
 
 # download clean data(Europarl+NewsCommentary)
 wget https://github.com/pmichel31415/mtnt/releases/download/v1.1/clean-data-en-fr.tar.gz
@@ -41,10 +41,7 @@ cat data/train/*.en > data/train/train.large.en
 cat data/train/*.fr > data/train/train.large.fr
 python shuffle.py -src data/train/train.large.fr -tgt data/train/train.large.en
 
-cat data/fine-tune/train/train.en-fr.en data/fine-tune/train/train.fr-en.en > data/fine-tune/train/train.en
-cat data/fine-tune/train/train.en-fr.fr data/fine-tune/train/train.fr-en.fr > data/fine-tune/train/train.fr
-cat data/fine-tune/valid/valid.en-fr.en data/fine-tune/valid/valid.fr-en.en > data/fine-tune/valid/valid.en
-cat data/fine-tune/valid/valid.en-fr.fr data/fine-tune/valid/valid.fr-en.fr > data/fine-tune/valid/valid.fr
+
 
 # download MTNT dataset
 wget https://github.com/pmichel31415/mtnt/releases/download/v1.1/MTNT.1.1.tar.gz
@@ -61,6 +58,11 @@ mv test/test.fr-en.* ../data/fine-tune/test
 cd ..
 rm -rf MTNT
 rm MTNT.1.1.tar.gz
+
+cat data/fine-tune/train/train.en-fr.en data/fine-tune/train/train.fr-en.en > data/fine-tune/train/train.en
+cat data/fine-tune/train/train.en-fr.fr data/fine-tune/train/train.fr-en.fr > data/fine-tune/train/train.fr
+cat data/fine-tune/valid/valid.en-fr.en data/fine-tune/valid/valid.fr-en.en > data/fine-tune/valid/valid.en
+cat data/fine-tune/valid/valid.en-fr.fr data/fine-tune/valid/valid.fr-en.fr > data/fine-tune/valid/valid.fr
 
 # download WMT19 Robustness test set
 wget http://www.cs.cmu.edu/~pmichel1/hosting/MTNT2019.tar.gz
@@ -130,6 +132,24 @@ cat *.fr.txt > ../data/fine-tune/train/iwslt.en-fr.fr.txt
 cd ..
 rm -rf en-fr
 rm en-fr.tgz
+
+# monolingual data
+wget http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.fr.shuffled.v2.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.fr.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.fr.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2011.fr.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.fr.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.fr.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.fr.shuffled.gz
+cat *.gz | gzip -d > data/monolingual/fr.txt
+rm *.gz
+
+wget http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.de.shuffled.v2.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.de.shuffled.gz
+wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.de.shuffled.gz
+
+cat *.gz | gzip -d > data/monolingual/en.txt
+rm *.gz
 
 # we use OpenNMT-py for training so you have to clone the repository
 # uncomment the following lines if you it is not installed
