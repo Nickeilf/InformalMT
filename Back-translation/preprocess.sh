@@ -1,7 +1,7 @@
 DATA_DIR=data
 TOOL_DIR=../tools
 RAW_DATA_DIR=../data
-mkdir -p ${DATA_DIR}/tok ${DATA_DIR}/bpe
+mkdir -p ${DATA_DIR}/tok ${DATA_DIR}/bpe ${DATA_DIR}/translate
 
 echo "--------start tokenization----------"
 # WMT data
