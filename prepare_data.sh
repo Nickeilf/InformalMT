@@ -146,7 +146,6 @@ rm *.gz
 
 wget http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.en.shuffled.v2.gz
 wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.en.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.en.shuffled.gz
 
 cat *.gz | gzip -d > data/monolingual/en.txt
 rm *.gz
