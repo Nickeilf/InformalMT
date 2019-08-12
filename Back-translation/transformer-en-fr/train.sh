@@ -58,7 +58,7 @@ python ${ONMT_DIR}/train.py -word_vec_size 512 \
                             -learning_rate 2.0 \
 							-decay_method noam \
 							-max_grad_norm 0.0 \
-							-warmup_steps 8000 \
+							-warmup_steps 15000 \
                             -log_file ${NAME}.log \
 							-report_every 50 \
                             -tensorboard \
