@@ -133,27 +133,10 @@ cd ..
 rm -rf en-fr
 rm en-fr.tgz
 
-# monolingual data
-wget http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.fr.shuffled.v2.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.fr.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.fr.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2011.fr.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.fr.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.fr.shuffled.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.fr.shuffled.gz
-cat *.gz | gzip -d > data/monolingual/fr.txt
-rm *.gz
-
-wget http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.en.shuffled.v2.gz
-wget http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.en.shuffled.gz
-
-cat *.gz | gzip -d > data/monolingual/en.txt
-rm *.gz
-
 # we use OpenNMT-py for training so you have to clone the repository
 # uncomment the following lines if you it is not installed
 
-cd runs
+cd tools
 git clone https://github.com/OpenNMT/OpenNMT-py.git
 cd OpenNMT-py
 pip install -r requirements.txt
