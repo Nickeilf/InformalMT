@@ -4,7 +4,7 @@ mkdir -p data/fine-tune/train data/fine-tune/valid data/fine-tune/test data/fine
 # download clean data(Europarl+NewsCommentary)
 wget https://github.com/pmichel31415/mtnt/releases/download/v1.1/clean-data-en-fr.tar.gz
 tar -xvzf clean-data-en-fr.tar.gz
-python shuffle.py -src train.en -tgt train.fr
+python tools/shuffle.py -src train.en -tgt train.fr
 mv train.* data/train
 mv dev.* data/valid
 mv news* data/test
@@ -39,7 +39,7 @@ rm raw.*
 mv clean.* data/train/
 cat data/train/*.en > data/train/train.large.en
 cat data/train/*.fr > data/train/train.large.fr
-python shuffle.py -src data/train/train.large.fr -tgt data/train/train.large.en
+python tools/shuffle.py -src data/train/train.large.fr -tgt data/train/train.large.en
 
 
 

@@ -1,13 +1,23 @@
 #!/bin/bash
-# building pipeline for baseline on fr-en translation
-# train: newscommentary + europarl
-# valid: newsdiscussdev2015
-# test: newstest2014/newsdiscusstest2015/MTNT-test-fr-en
 source path.config
 
 mkdir ${VOCAB_DIR}
 mkdir ${DATA_DIR}
 mkdir result
+
+#cp -r ../conv-fr-en/data ./
+#cp -r ../conv-fr-en/models ./models
+
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.en > ${VOCAB_DIR}/train.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/train/train.fr-en.fr > ${VOCAB_DIR}/train.finetune.tok.fr
+#perl ${TOOL_DIR}/tokenizer.perl -l en < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.en > ${VOCAB_DIR}/valid.finetune.tok.en
+#perl ${TOOL_DIR}/tokenizer.perl -l fr < ${RAW_DATA_DIR}/fine-tune/valid/valid.fr-en.fr > ${VOCAB_DIR}/valid.finetune.tok.fr
+
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.en > ${DATA_DIR}/train.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.en.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.en > ${DATA_DIR}/valid.finetune.bpe.16k.en
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/train.finetune.tok.fr > ${DATA_DIR}/train.finetune.bpe.16k.fr
+#python ${TOOL_DIR}/apply_bpe.py -c ${DATA_DIR}/fr-en.fr.bpe.16k < ${VOCAB_DIR}/valid.finetune.tok.fr > ${DATA_DIR}/valid.finetune.bpe.16k.fr
+
 
 # skip preprocessing if already done
 if [ "$(ls -A ${VOCAB_DIR})" ]; then
@@ -59,16 +69,18 @@ else
 fi
 
 # building vocabulary
-mkdir ${DATA_DIR}/fairseq
-fairseq-preprocess --source-lang fr --target-lang en \
-  --trainpref ${DATA_DIR}/train.bpe.16k --validpref ${DATA_DIR}/valid.bpe.16k \
-  --thresholdtgt 0 --thresholdsrc 0 --workers 8 --destdir ${DATA_DIR}/fairseq
+mkdir ${DATA_DIR}/fairseq-tune
+#fairseq-preprocess --source-lang fr --target-lang en \
+#  --trainpref ${DATA_DIR}/train.finetune.bpe.16k --validpref ${DATA_DIR}/valid.finetune.bpe.16k \
+#  --thresholdtgt 0 --thresholdsrc 0 --workers 8 --destdir ${DATA_DIR}/fairseq-tune \
+#  --srcdict ${DATA_DIR}/fairseq/dict.fr.txt --tgtdict ${DATA_DIR}/fairseq/dict.en.txt
 
 # training
 # add shared vocab
 CUDA_VISIBLE_DEVICES=0
-fairseq-train ${DATA_DIR}/fairseq \
-  --lr 0.5 --clip-norm 0.1 --dropout 0.1 --max-tokens 3000 \
+fairseq-train ${DATA_DIR}/fairseq-tune \
+  --lr 0.001 --clip-norm 0.1 --dropout 0.1 --max-tokens 3000 \
   --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
-  --lr-scheduler fixed --force-anneal 50 --log-format json --skip-invalid-size-inputs-valid-test \
-  --arch fconv_wmt_en_fr --save-dir models --max-epoch 50 --max-sentences-valid 5 > convs2s.log
+  --lr-scheduler reduce_lr_on_plateau --lr-shrink 0.5 --log-format json --skip-invalid-size-inputs-valid-test \
+  --arch fconv_wmt_en_fr --save-dir models --max-epoch 100 --max-sentences-valid 5 \
+  --restore-file checkpoint20.pt --reset-optimizer

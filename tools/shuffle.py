@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import argparse
+from tqdm import tqdm
 
 def shuffle_data(src_path, tgt_path):
 	with open(src_path,"rb") as f:
@@ -14,7 +15,7 @@ def shuffle_data(src_path, tgt_path):
 	index = list(range(len(src)))
 
 	random.shuffle(index)
-	for i in range(len(src)):
+	for i in tqdm(range(len(src))):
 		src_result.append(src[index[i]])
 		tgt_result.append(tgt[index[i]])
 
